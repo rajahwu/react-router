@@ -1,9 +1,10 @@
-import { RootLayout } from "../components/layouts";
+import { RootLayout } from "components/layouts";
+import { Outlet } from "react-router-dom";
 
 export default function Root() {
     return (
       <RootLayout>
-        <div>Main Content</div>
+        <Outlet />
       </RootLayout>
     );
   }

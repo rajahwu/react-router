@@ -1,5 +1,5 @@
-import Footer from "../Footer";
-import Header from "../Header";
+import Footer from "components/Footer";
+import Header from "components/Header";
 import { Container, Box } from "@mui/material";
 
 export default function Layout({ children }) {
