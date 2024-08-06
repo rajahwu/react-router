@@ -1,9 +1,5 @@
-import * as React from 'react';
+import { Container } from "@mui/material";
 
 export default function BasicMenu() {
-  return (
-    <div>
-      Header
-    </div>
-  );
+  return <Container>Header</Container>;
 }
