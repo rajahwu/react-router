@@ -1,3 +1,4 @@
+// root.jsx
 import { RootLayout } from "components/layouts";
 import { Outlet } from "react-router-dom";
 

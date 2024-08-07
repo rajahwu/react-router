@@ -1,22 +1,37 @@
 import { Container } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "context/AuthContext";
 
 export default function Header() {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const { user } = useAuth();
 
   return (
     <Container>
-      <nav>
-        <ul>
-          <li>
-            {pathname !== "/" && <NavLink to="/">Home</NavLink>}
-          </li>
-          <li>
-            {pathname !== "/register" && <NavLink to="/register">Register</NavLink>}
-          </li>
-        </ul>
-      </nav>
+      <header>
+        <nav>
+          <ul>
+            {user ? (
+              <>
+                <li>
+                  <NavLink to="/">Home</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/signout">Sign Out</NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavLink to="/register">Register</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/login">Login</NavLink>
+                </li>
+              </>
+            )}
+          </ul>
+        </nav>
+      </header>
     </Container>
   );
 }

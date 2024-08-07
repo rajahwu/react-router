@@ -12,6 +12,7 @@ export default defineConfig({
       components: "/src/components",
       assets: "/src/assets",
       lib: "/src/lib",
+      context: "/src/context"
     }
   }
 })
