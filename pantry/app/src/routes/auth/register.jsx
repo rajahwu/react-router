@@ -1,20 +1,27 @@
 // routes/register.js
 import axios from "axios";
+import { useAuth } from "context/AuthContext";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Form, redirect } from "react-router-dom";
 import { auth } from "/src/firebase";
 
+// Loader function to check if user is already authenticated
+export async function loader() {
+  const user = auth.currentUser;
+  if (user) {
+    return redirect("/");
+  }
+  return null;
+}
+
+// Action function to handle the form submission
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     // Fetch random user data
@@ -38,13 +45,20 @@ export async function action({ request }) {
   }
 }
 
+// Register component
 export default function Register() {
+  const { user } = useAuth();
+
+  if (user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <h1>Sign Up</h1>
       <Form method="post" action="/register">
-        <input type="text" name="email" placeholder="email" />
-        <input type="password" name="password" placeholder="password" />
+        <input type="text" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
         <button type="submit">Register</button>
       </Form>
     </>

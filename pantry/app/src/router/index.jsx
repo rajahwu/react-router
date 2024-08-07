@@ -4,9 +4,9 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import Login, { action as loginAction } from "routes/auth/login";
+import Login, { action as loginAction, loader as loginLoader } from "routes/auth/login";
 import { ProtectedRoute } from "routes/auth/ProtectedRoute";
-import Register, { action as registrationAction } from "routes/auth/register";
+import Register, { loader as registerLoader, action as registrationAction } from "routes/auth/register";
 import SignOut, { action as signOutAction } from "routes/auth/signout";
 import Dashboard from "routes/dashboard";
 import Root from "routes/root";
@@ -32,9 +32,10 @@ const router = createBrowserRouter(
       <Route
         path="register"
         element={<Register />}
+        loader={registerLoader}
         action={registrationAction}
       />
-      <Route path="login" element={<Login />} action={loginAction} />
+      <Route path="login" element={<Login />} loader={loginLoader} action={loginAction} />
       <Route path="signout" element={<SignOut />} action={signOutAction} />
     </Route>,
   ),
