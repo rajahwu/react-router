@@ -1,20 +1,43 @@
 // src/router/index.jsx
-import { createRoutesFromElements, createBrowserRouter, Route } from 'react-router-dom';
-import Root from 'routes/root';
-import Register, { action as registrationAction } from 'routes/register';
-import Login, { action as loginAction } from 'routes/login';
-import SignOut, { action as signOutAction } from 'routes/signout';
-import { ProtectedRoute } from 'routes/ProtectedRoute'; 
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
+import Login, { action as loginAction } from "routes/auth/login";
+import { ProtectedRoute } from "routes/auth/ProtectedRoute";
+import Register, { action as registrationAction } from "routes/auth/register";
+import SignOut, { action as signOutAction } from "routes/auth/signout";
+import Dashboard from "routes/dashboard";
+import Root from "routes/root";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
-      <Route index element={<ProtectedRoute><div>main content</div></ProtectedRoute>} />
-      <Route path="register" element={<Register />} action={registrationAction} />
+      <Route
+        index
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="pantries" />
+      <Route path="pantry/:pantryId" />
+      <Route path="settings">
+        <Route path="profile" />
+        <Route path="theme" />
+        <Route path="account" />
+      </Route>
+      <Route
+        path="register"
+        element={<Register />}
+        action={registrationAction}
+      />
       <Route path="login" element={<Login />} action={loginAction} />
       <Route path="signout" element={<SignOut />} action={signOutAction} />
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 export default router;

@@ -1,12 +1,12 @@
+import { Box, Container } from "@mui/material";
 import Footer from "components/Footer";
 import Header from "components/Header";
-import { Container, Box } from "@mui/material";
 
 export default function Layout({ children }) {
   return (
     <Container>
       <Header />
-      <Box component="main" height={200} width={200} my={4} gap={4} p={2}>
+      <Box component="main" my={4} gap={4} p={2}>
         {children}
       </Box>
 

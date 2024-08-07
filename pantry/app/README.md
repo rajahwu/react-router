@@ -68,9 +68,12 @@ Register: Allows users to create a new account.
 SignOut: Logs users out of their account.
 
 Project Structure
-arduino```
-pantry/app/
+
+```arduino
+# tree -I 'node_modules'
+.
 ├── README.md
+├── docs
 ├── index.html
 ├── jsconfig.json
 ├── package-lock.json
@@ -86,10 +89,11 @@ pantry/app/
 │   │   │   └── index.jsx
 │   │   ├── Header
 │   │   │   └── index.jsx
-│   │   ├── index.js
 │   │   └── layouts
 │   │       ├── index.js
 │   │       └── root.jsx
+│   ├── context
+│   │   └── AuthContext.jsx
 │   ├── firebase.config.js
 │   ├── firebase.js
 │   ├── index.css
@@ -98,13 +102,19 @@ pantry/app/
 │   ├── router
 │   │   └── index.jsx
 │   └── routes
+│       ├── auth
+│       │   ├── ProtectedRoute.jsx
+│       │   ├── login.jsx
+│       │   ├── register.jsx
+│       │   └── signout.jsx
 │       ├── index.js
-│       ├── login.jsx
-│       ├── register.jsx
-│       ├── root.jsx
-│       └── signout.jsx
+│       ├── pantry
+│       │   └── index.jsx
+│       └── root.jsx
 ├── tailwind.config.js
 └── vite.config.js
+
+15 directories, 26 files
 ```
 
 ## Notes

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Form, redirect } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '/src/firebase';
 
 export async function action({ request }) {
   const formData = await request.formData();
