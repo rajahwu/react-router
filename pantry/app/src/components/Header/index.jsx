@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, Form } from "react-router-dom";
 import { useAuth } from "context/AuthContext";
 
 export default function Header() {
@@ -16,7 +16,9 @@ export default function Header() {
                   <NavLink to="/">Home</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/signout">Sign Out</NavLink>
+                  <Form method="post" action="/signout">
+                    <button type="submit">Sign Out</button>
+                  </Form>
                 </li>
               </>
             ) : (
