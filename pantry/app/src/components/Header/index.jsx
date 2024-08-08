@@ -8,7 +8,7 @@ import { Form, NavLink, useNavigate } from "react-router-dom";
 export default function Header() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const userNavItems = ["", "pantries", "settings"];
+  const userNavItems = ["dashboard", "pantries", "settings"];
   const loginNavItems = ["register", "login"];
 
   // Redirect if the user is logged in and tries to access login or register
@@ -16,7 +16,7 @@ export default function Header() {
     if (user) {
       const currentPath = window.location.pathname;
       if (loginNavItems.includes(currentPath.substring(1))) {
-        navigate("/");
+        navigate(`/${user.displayName}/dashboard`);
       }
     }
   }, [user, loginNavItems, navigate]);
@@ -43,7 +43,7 @@ export default function Header() {
               <>
                 {userNavItems.map((item) => (
                   <Grid item key={item}>
-                    <NavLink to={`/${item}`} style={{ margin: "0 10px" }}>
+                    <NavLink to={`/${user.displayName}/${item}`} style={{ margin: "0 10px" }}>
                       {item === ""
                         ? "Home"
                         : item.charAt(0).toUpperCase() + item.slice(1)}

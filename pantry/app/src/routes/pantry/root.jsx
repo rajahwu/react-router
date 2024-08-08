@@ -27,7 +27,7 @@ export default function Root() {
           <aside>
             <Typography variant="h6">Pantry List</Typography>
             {pantries.map((pantry) => (
-              <NavLink key={pantry.id} to={`${pantry.id}`}>
+              <NavLink key={pantry.id} to={`pantry/${pantry.id}`}>
                 <Typography style={{ cursor: "pointer", marginBottom: "10px" }}>
                   {pantry.name}
                 </Typography>

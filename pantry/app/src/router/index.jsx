@@ -35,8 +35,9 @@ const router = createBrowserRouter(
         action={loginAction}
       />
       <Route path="signout" element={<SignOut />} action={signOutAction} />
+      <Route path=":username">
       <Route
-        index
+        path="dashboard"
         loader={dashboardLoader}
         element={
           <ProtectedRoute>
@@ -47,10 +48,11 @@ const router = createBrowserRouter(
       <Route path="pantries" element={<PantryPage />} loader={pantryPageLoader}>
         <Route index element={<PantryItemList />} loader={pantryPageLoader} />
         <Route
-          path=":pantryId"
+          path="pantry/:pantryId"
           element={<PantryItemList />}
           loader={pantryPageLoader}
         />
+      </Route>
       </Route>
       <Route path="settings">
         <Route path="profile" />

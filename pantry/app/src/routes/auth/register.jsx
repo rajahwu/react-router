@@ -9,7 +9,7 @@ import { auth } from "/src/firebase";
 export async function loader() {
   const user = auth.currentUser;
   if (user) {
-    return redirect("/");
+    return redirect(`/${user.displayName}/dashboard`);
   }
   return null;
 }
@@ -40,7 +40,7 @@ export async function action({ request }) {
       photoURL: randomAvatar,
     });
 
-    return redirect("/");
+    return redirect(`/${randomUsername}/dashboard`);
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;

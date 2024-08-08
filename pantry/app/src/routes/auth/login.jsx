@@ -9,7 +9,7 @@ import { auth } from "/src/firebase";
 export async function loader() {
   const user = auth.currentUser;
   if (user) {
-    return redirect("/");
+    return redirect(`/${user.displayName}/dashboard`);
   }
   return null;
 }
@@ -22,7 +22,7 @@ export async function action({ request }) {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    return redirect("/");
+    return redirect(`/${auth.currentUser.displayName}/dashboard`);
   } catch (error) {
     console.error("Error signing in:", error.code, error.message);
     return redirect("/login");

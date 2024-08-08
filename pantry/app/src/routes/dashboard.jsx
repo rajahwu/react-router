@@ -20,7 +20,6 @@ export async function loader() {
 
 const Dashboard = () => {
   const { pantries } = useLoaderData();
-  console.log(pantries);
   return (
     <Container>
       <Typography variant="h4" sx={{ textAlign: "center", mb: 4 }}>
