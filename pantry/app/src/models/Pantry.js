@@ -57,7 +57,11 @@ class PantryItem {
 
   static async create(name, quantity, unit, expiryDate, pantryId) {
     const db = admin.firestore();
-    const docRef = db.collection("pantries").doc(pantryId).collection("items").doc(); // auto-generated ID
+    const docRef = db
+      .collection("pantries")
+      .doc(pantryId)
+      .collection("items")
+      .doc(); // auto-generated ID
     const newItem = new PantryItem(docRef.id, name, quantity, unit, expiryDate);
     await docRef.set({
       name: newItem.name,
@@ -70,18 +74,32 @@ class PantryItem {
 
   static async getById(pantryId, itemId) {
     const db = admin.firestore();
-    const docRef = db.collection("pantries").doc(pantryId).collection("items").doc(itemId);
+    const docRef = db
+      .collection("pantries")
+      .doc(pantryId)
+      .collection("items")
+      .doc(itemId);
     const doc = await docRef.get();
     if (!doc.exists) {
       throw new Error(`Item with id ${itemId} not found`);
     }
     const data = doc.data();
-    return new PantryItem(doc.id, data.name, data.quantity, data.unit, data.expiryDate);
+    return new PantryItem(
+      doc.id,
+      data.name,
+      data.quantity,
+      data.unit,
+      data.expiryDate,
+    );
   }
 
   async update(name, quantity, unit, expiryDate) {
     const db = admin.firestore();
-    const docRef = db.collection("pantries").doc(this.pantryId).collection("items").doc(this.id);
+    const docRef = db
+      .collection("pantries")
+      .doc(this.pantryId)
+      .collection("items")
+      .doc(this.id);
     await docRef.update({ name, quantity, unit, expiryDate });
     this.name = name;
     this.quantity = quantity;
@@ -91,7 +109,11 @@ class PantryItem {
 
   static async deleteById(pantryId, itemId) {
     const db = admin.firestore();
-    const docRef = db.collection("pantries").doc(pantryId).collection("items").doc(itemId);
+    const docRef = db
+      .collection("pantries")
+      .doc(pantryId)
+      .collection("items")
+      .doc(itemId);
     await docRef.delete();
   }
 }

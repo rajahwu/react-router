@@ -15,6 +15,7 @@ import Register, {
 } from "routes/auth/register";
 import SignOut, { action as signOutAction } from "routes/auth/signout";
 import Dashboard, { loader as dashboardLoader } from "routes/dashboard";
+import PantryItemList from "routes/pantry/itemList";
 import PantryPage, { loader as pantryPageLoader } from "routes/pantry/root";
 import Root from "routes/root";
 
@@ -43,8 +44,14 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route path="pantries" element={<PantryPage />} loader={pantryPageLoader} />
-      <Route path="pantry/:pantryId" />
+      <Route path="pantries" element={<PantryPage />} loader={pantryPageLoader}>
+        <Route index element={<PantryItemList />} loader={pantryPageLoader} />
+        <Route
+          path=":pantryId"
+          element={<PantryItemList />}
+          loader={pantryPageLoader}
+        />
+      </Route>
       <Route path="settings">
         <Route path="profile" />
         <Route path="theme" />

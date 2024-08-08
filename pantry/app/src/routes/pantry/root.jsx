@@ -1,6 +1,6 @@
-import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useLoaderData } from "react-router-dom";
+import { NavLink, Outlet, useLoaderData } from "react-router-dom";
 import pantryService from "services/firebase/pantryService";
 
 // Loader function to fetch pantries for the authenticated user
@@ -11,7 +11,7 @@ export async function loader() {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        pantries = await pantryService.getUserPantries(user.uid);
+        pantries = await pantryService.getUserPantriesWithItems(user.uid);
       }
       resolve({ pantries });
     });
@@ -20,9 +20,6 @@ export async function loader() {
 
 export default function Root() {
   const { pantries } = useLoaderData();
-  const items = [];
-  const selectedPantry = null;
-
   return (
     <Container>
       <Grid container spacing={2}>
@@ -30,43 +27,16 @@ export default function Root() {
           <aside>
             <Typography variant="h6">Pantry List</Typography>
             {pantries.map((pantry) => (
-              <Typography
-                key={pantry.id}
-                style={{ cursor: "pointer", marginBottom: "10px" }}
-              >
-                {pantry.name}
-              </Typography>
+              <NavLink key={pantry.id} to={`${pantry.id}`}>
+                <Typography style={{ cursor: "pointer", marginBottom: "10px" }}>
+                  {pantry.name}
+                </Typography>
+              </NavLink>
             ))}
-            <Button variant="contained">
-              + Pantry
-            </Button>
+            <Button variant="contained">+ Pantry</Button>
           </aside>
         </Grid>
-        <Grid item xs={9}>
-          <section id="main">
-            <Typography variant="h6">
-              {selectedPantry
-                ? `Items in ${selectedPantry.name}`
-                : "Select a pantry to see items"}
-            </Typography>
-            {selectedPantry && (
-              <>
-                {items.map((item) => (
-                  <Typography key={item.id}>{item.name}</Typography>
-                ))}
-                <TextField
-                  placeholder="New Item Name"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                />
-                <Button variant="contained">
-                  + Item
-                </Button>
-              </>
-            )}
-          </section>
-        </Grid>
+        <Outlet />
       </Grid>
     </Container>
   );

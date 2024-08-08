@@ -21,7 +21,11 @@ export async function action({ request }) {
   const password = formData.get("password");
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     const user = userCredential.user;
 
     // Fetch random user data
@@ -58,7 +62,12 @@ export default function Register() {
       <h1>Sign Up</h1>
       <Form method="post" action="/register">
         <input type="text" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
         <button type="submit">Register</button>
       </Form>
     </>

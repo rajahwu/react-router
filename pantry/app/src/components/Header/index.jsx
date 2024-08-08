@@ -1,8 +1,8 @@
 import { Container } from "@mui/material";
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { useAuth } from "context/AuthContext";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { Form, NavLink, useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -22,9 +22,11 @@ export default function Header() {
   }, [user, loginNavItems, navigate]);
 
   // Determine the header text
-  const headerText = user ? 
-    (user.displayName ? `${user.displayName} Menu` : "User Menu") : 
-    "Guest Menu";
+  const headerText = user
+    ? user.displayName
+      ? `${user.displayName} Menu`
+      : "User Menu"
+    : "Guest Menu";
 
   return (
     <Container>
@@ -41,8 +43,10 @@ export default function Header() {
               <>
                 {userNavItems.map((item) => (
                   <Grid item key={item}>
-                    <NavLink to={`/${item}`} style={{ margin: '0 10px' }}>
-                      {item === "" ? "Home" : item.charAt(0).toUpperCase() + item.slice(1)}
+                    <NavLink to={`/${item}`} style={{ margin: "0 10px" }}>
+                      {item === ""
+                        ? "Home"
+                        : item.charAt(0).toUpperCase() + item.slice(1)}
                     </NavLink>
                   </Grid>
                 ))}
@@ -55,7 +59,7 @@ export default function Header() {
             ) : (
               loginNavItems.map((item) => (
                 <Grid item key={item}>
-                  <NavLink to={`/${item}`} style={{ margin: '0 10px' }}>
+                  <NavLink to={`/${item}`} style={{ margin: "0 10px" }}>
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </NavLink>
                 </Grid>

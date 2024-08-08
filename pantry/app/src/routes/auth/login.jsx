@@ -1,9 +1,9 @@
 // routes/Login.js
 
 import { useAuth } from "context/AuthContext";
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Form, redirect } from 'react-router-dom';
-import { auth } from '/src/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Form, redirect } from "react-router-dom";
+import { auth } from "/src/firebase";
 
 // Loader function to check if user is already authenticated
 export async function loader() {
@@ -17,15 +17,15 @@ export async function loader() {
 // Action function to handle the form submission
 export async function action({ request }) {
   const formData = await request.formData();
-  const email = formData.get('email');
-  const password = formData.get('password');
+  const email = formData.get("email");
+  const password = formData.get("password");
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    return redirect('/');
+    return redirect("/");
   } catch (error) {
-    console.error('Error signing in:', error.code, error.message);
-    return redirect('/login');
+    console.error("Error signing in:", error.code, error.message);
+    return redirect("/login");
   }
 }
 
@@ -42,7 +42,12 @@ export default function Login() {
       <h1>Login</h1>
       <Form method="post" action="/login">
         <input type="text" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
         <button type="submit">Login</button>
       </Form>
     </>
