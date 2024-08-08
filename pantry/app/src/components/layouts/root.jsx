@@ -1,6 +1,7 @@
 import { Box, Container } from "@mui/material";
 import Footer from "components/Footer";
 import Header from "components/Header";
+import PropTypes from "prop-types";
 
 export default function Layout({ children }) {
   return (
@@ -14,3 +15,7 @@ export default function Layout({ children }) {
     </Container>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

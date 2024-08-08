@@ -1,6 +1,7 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useAuth } from "context/AuthContext";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import PropTypes from "prop-types";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import pantryService from "services/firebase/pantryService";
 
@@ -74,6 +75,13 @@ function UserProfile() {
   );
 }
 
+UserProfile.propTypes = {
+  user: PropTypes.shape({
+    displayName: PropTypes.string,
+    photoURL: PropTypes.string,
+  }),
+};
+
 function Pantries({ pantries }) {
   const navigate = useNavigate();
   return (
@@ -142,6 +150,21 @@ function Pantries({ pantries }) {
     </Box>
   );
 }
+
+Pantries.propTypes = {
+  pantries: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+};
 
 function Settings() {
   return (

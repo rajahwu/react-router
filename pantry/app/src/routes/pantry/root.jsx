@@ -1,6 +1,6 @@
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, Container, Grid, Typography } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { NavLink, Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import pantryService from "services/firebase/pantryService";
 
 // Loader function to fetch pantries for the authenticated user
@@ -20,21 +20,29 @@ export async function loader() {
 
 export default function Root() {
   const { pantries } = useLoaderData();
+  const navigate = useNavigate();
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <aside>
-            <Typography variant="h6">Pantry List</Typography>
+    <Container sx={{ borderTop: "3px solid black", borderBottom: "3px solid black" }}>
+      <Grid container spacing={6}>
+        <Grid item xs={4}>
+          <Box sx={{ borderRight: "3px solid black" }}>
+            <Typography variant="h6">Pantries</Typography>
+            <Button variant="contained" sx={{ marginBottom: "10px" }}>+ Pantry</Button>
             {pantries.map((pantry) => (
-              <NavLink key={pantry.id} to={`pantry/${pantry.id}`}>
-                <Typography style={{ cursor: "pointer", marginBottom: "10px" }}>
+              <Card key={pantry.id} sx={{ marginBottom: "10px", border: "1px solid blue", marginRight: 3 }}>
+                <CardContent>
+                <Typography sx={{ cursor: "pointer", marginBottom: "10px" }}>
                   {pantry.name}
                 </Typography>
-              </NavLink>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => navigate(`pantry/${pantry.id}`)}>View</Button>
+                  <Button size="small">Edit</Button>
+                  <Button size="small">Delete</Button>
+                </CardActions>
+              </Card>
             ))}
-            <Button variant="contained">+ Pantry</Button>
-          </aside>
+          </Box>
         </Grid>
         <Outlet />
       </Grid>
