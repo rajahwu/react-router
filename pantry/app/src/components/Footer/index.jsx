@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, Link } from "@mui/material";
+import { Container, Grid, Link, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 export default function Footer() {
@@ -41,7 +41,7 @@ export default function Footer() {
         </Grid>
       </Grid>
       <Typography variant="body2" align="center" style={{ marginTop: '20px' }}>
-        &copy; {new Date().getFullYear()} Your Company Name. All rights reserved.
+        &copy; {new Date().getFullYear()} HSPantry. All rights reserved.
       </Typography>
     </Container>
   );

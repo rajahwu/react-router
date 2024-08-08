@@ -1,7 +1,26 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useAuth } from "context/AuthContext";
 
-export function UserProfile() {
+const Dashboard = () => {
+  return (
+    <Container>
+      <Typography variant="h4" sx={{ textAlign: "center", mb: 4 }}>Dashboard</Typography>
+      <Grid container spacing={4} justifyContent="center" alignItems="stretch">
+        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
+          <UserProfile />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
+          <Pantries />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
+          <Settings />
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
+
+function UserProfile() {
   const { user } = useAuth();
 
   return (
@@ -102,23 +121,5 @@ function Settings() {
   );
 }
 
-const Dashboard = () => {
-  return (
-    <Container>
-      <Typography variant="h4" sx={{ textAlign: "center", mb: 4 }}>Dashboard</Typography>
-      <Grid container spacing={4} justifyContent="center" alignItems="stretch">
-        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
-          <UserProfile />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
-          <Pantries />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
-          <Settings />
-        </Grid>
-      </Grid>
-    </Container>
-  );
-};
 
 export default Dashboard;
