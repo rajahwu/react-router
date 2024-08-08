@@ -1,6 +1,7 @@
-import { Box, Button, Card, CardActions, CardContent, Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Pantries from "routes/pantry/pantries";
 import pantryService from "services/firebase/pantryService";
 
 // Loader function to fetch pantries for the authenticated user
@@ -19,32 +20,22 @@ export async function loader() {
 }
 
 export default function Root() {
-  const { pantries } = useLoaderData();
-  const navigate = useNavigate();
   return (
-    <Container sx={{ borderTop: "3px solid black", borderBottom: "3px solid black" }}>
-      <Grid container spacing={6}>
-        <Grid item xs={4}>
-          <Box sx={{ borderRight: "3px solid black" }}>
-            <Typography variant="h6">Pantries</Typography>
-            <Button variant="contained" sx={{ marginBottom: "10px" }}>+ Pantry</Button>
-            {pantries.map((pantry) => (
-              <Card key={pantry.id} sx={{ marginBottom: "10px", border: "1px solid blue", marginRight: 3 }}>
-                <CardContent>
-                <Typography sx={{ cursor: "pointer", marginBottom: "10px" }}>
-                  {pantry.name}
-                </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={() => navigate(`pantry/${pantry.id}`)}>View</Button>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Delete</Button>
-                </CardActions>
-              </Card>
-            ))}
-          </Box>
+    <Container>
+      <Grid container spacing={3} sx={{ borderBottom: "3px solid black", borderTop: "3px solid black" }}>
+        <Grid item xs={4} sx={{ borderRight: "3px solid black" }}>
+          <Pantries />
         </Grid>
-        <Outlet />
+        <Grid item xs={5}>
+          <Outlet />
+        </Grid>
+        <Grid item xs={3} sx={{ borderLeft: "3px solid black" }}>
+          <header>
+            <ul>
+              <li>Find Recipes</li>
+            </ul>
+          </header>
+        </Grid>
       </Grid>
     </Container>
   );

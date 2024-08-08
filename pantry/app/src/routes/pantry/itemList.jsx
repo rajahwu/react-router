@@ -7,8 +7,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Grid,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useLoaderData, useParams } from "react-router-dom";
 
@@ -19,16 +18,17 @@ export default function PantryItemList() {
   const items = selectedPantry ? selectedPantry.items : [];
 
   return (
-    <Grid item xs={6}>
-      <section id="main">
+      <Box id="main" sx={{ marginRight: 3 }}>
+        <Box sx={{ display: "flex", gap: 3, marginBottom: "10px"  }}>
         <Typography variant="h6">
           {selectedPantry
             ? `Items in ${selectedPantry.name}`
             : "Select a pantry to see items"}
         </Typography>
+      {selectedPantry && <Button variant="contained" sx={{ marginBottom: "10px" }}>+ Add Item</Button>}
+      </Box>
         {selectedPantry && (
           <>
-            <Button variant="contained" sx={{ marginBottom: "10px" }}>+ New Item</Button>
             {items.map((item) => (
               <Card
                 key={item.id}
@@ -76,7 +76,6 @@ export default function PantryItemList() {
             ))}
           </>
         )}
-      </section>
-    </Grid>
+      </Box>
   );
 }
