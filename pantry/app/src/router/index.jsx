@@ -47,6 +47,7 @@ const router = createBrowserRouter(
       />
       <Route path="pantries" element={<PantryPage />} loader={pantryPageLoader}>
         <Route index element={<PantryItemList />} loader={pantryPageLoader} />
+        <Route path="add" element={<PantryItemList />} loader={pantryPageLoader}/>
         <Route
           path="pantry/:pantryId"
           element={<PantryItemList />}
