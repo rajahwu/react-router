@@ -14,8 +14,8 @@ import Register, {
   action as registrationAction,
 } from "routes/auth/register";
 import SignOut, { action as signOutAction } from "routes/auth/signout";
-import Dashboard from "routes/dashboard";
-import PantryPage from "routes/pantry/root";
+import Dashboard, { loader as dashboardLoader } from "routes/dashboard";
+import PantryPage, { loader as pantryPageLoader } from "routes/pantry/root";
 import Root from "routes/root";
 
 const router = createBrowserRouter(
@@ -36,13 +36,14 @@ const router = createBrowserRouter(
       <Route path="signout" element={<SignOut />} action={signOutAction} />
       <Route
         index
+        loader={dashboardLoader}
         element={
           <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>
         }
       />
-      <Route path="pantries" element={<PantryPage />}/>
+      <Route path="pantries" element={<PantryPage />} loader={pantryPageLoader} />
       <Route path="pantry/:pantryId" />
       <Route path="settings">
         <Route path="profile" />

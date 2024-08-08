@@ -1,9 +1,27 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useLoaderData } from "react-router-dom";
+import pantryService from "services/firebase/pantryService";
+
+// Loader function to fetch pantries for the authenticated user
+export async function loader() {
+  const auth = getAuth();
+  let pantries = [];
+
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        pantries = await pantryService.getUserPantries(user.uid);
+      }
+      resolve({ pantries });
+    });
+  });
+}
 
 export default function Root() {
-const pantries = ["Pantry 1", "Pantry 2"];
-const items = [];
-const selectedPantry = null;
+  const { pantries } = useLoaderData();
+  const items = [];
+  const selectedPantry = null;
 
   return (
     <Container>
@@ -19,13 +37,7 @@ const selectedPantry = null;
                 {pantry.name}
               </Typography>
             ))}
-            <TextField
-              placeholder="New Pantry Name"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <Button variant="contained" >
+            <Button variant="contained">
               + Pantry
             </Button>
           </aside>
@@ -48,7 +60,7 @@ const selectedPantry = null;
                   fullWidth
                   margin="normal"
                 />
-                <Button variant="contained" >
+                <Button variant="contained">
                   + Item
                 </Button>
               </>
