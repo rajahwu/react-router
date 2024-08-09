@@ -121,7 +121,7 @@ function Pantries({ pantries }) {
                       "https://picsum.photos/100/100?random=1"
                     }
                     alt={pantry.imageAlt}
-                    style={{ width: "50px", height: "50px" }}
+                    style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: 5 }}
                   />
                   <Box>
                     {pantry.items.length

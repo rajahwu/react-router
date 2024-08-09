@@ -4,7 +4,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import Pantries from "routes/pantry/pantries";
 import pantryService from "services/firebase/pantryService";
 
-// Loader function to fetch pantries for the authenticated user
 export async function loader() {
   const auth = getAuth();
   let pantries = [];
@@ -28,15 +27,8 @@ export default function Root() {
         <Grid item xs={4} sx={{ borderRight: "3px solid black" }}>
           <Pantries isAddPantry={isAddPantry} />
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={8}>
           {!isAddPantry && <Outlet />}
-        </Grid>
-        <Grid item xs={3} sx={{ borderLeft: "3px solid black" }}>
-          <header>
-            <ul>
-              <li>Select Items to Find Recipes</li>
-            </ul>
-          </header>
         </Grid>
       </Grid>
     </Container>

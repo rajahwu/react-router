@@ -1,50 +1,128 @@
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  Typography
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useAuth } from "context/AuthContext";
 import PropTypes from "prop-types";
-import { Form, NavLink, useLoaderData, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Form, NavLink, useLoaderData } from "react-router-dom";
 
-export default function Pantries({ isAddPantry }) {
-    const navigate = useNavigate();
-    const { user } = useAuth();
-    const { pantries } = useLoaderData();
-    return (
-        <Box>
-          <Box sx={{ display: "flex", gap: 3, justifyContent: "baseline", marginBottom: "10px"}}>
-            <Typography variant="h6">Pantries</Typography>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => navigate("add")}>Add Pantry</Button>
-          </Box>
-            {isAddPantry &&
-            <Form method="post" action="/add">
-              <input type="hidden" value={user.uid} />
-              <input type="text" placeholder="Pantry Name" />
-              <Button type="submit">Add Pantry</Button>
+export default function Pantries() {
+  const { user } = useAuth();
+  const { pantries } = useLoaderData();
+  const [pantryForms, setPantryForms] = useState([]);
+
+  const handleAddPantryClick = () => {
+    setPantryForms([...pantryForms, { id: pantryForms.length }]);
+  };
+
+  const handleRemovePantryForm = (id) => {
+    setPantryForms(pantryForms.filter((form) => form.id !== id));
+  };
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 3,
+          justifyContent: "baseline",
+          marginBottom: "10px",
+        }}
+      >
+        <Typography variant="h6">Pantries</Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleAddPantryClick}
+        >
+          Add Pantry
+        </Button>
+      </Box>
+
+      {pantryForms.map((form) => (
+        <Box key={form.id} sx={{ marginBottom: "10px", marginRight: 2 }}>
+          <Form method="post" action="add">
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <input type="hidden" name="ownerId" value={user.uid} />
+              <TextField
+                name="pantryName"
+                type="text"
+                placeholder="Pantry Name"
+                inputProps={{ min: 1 }}
+                size="small"
+                required
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ minWidth: "40px", padding: "4px 8px" }}
+              >
+                <AddIcon />
+              </Button>
+            </Box>
+          </Form>
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ minWidth: "40px", padding: "4px 8px" }}
+            onClick={() => handleRemovePantryForm(form.id)}
+          >
+            <DeleteIcon />
+          </Button>
+        </Box>
+      ))}
+
+      {pantries.map((pantry) => (
+        <Card
+          key={pantry.id}
+          sx={{
+            marginBottom: "10px",
+            border: "1px solid blue",
+            marginRight: 3,
+          }}
+        >
+          <NavLink to={`${pantry.id}`}>
+            <CardContent
+              sx={{
+                borderBottom: "2px solid black",
+                backgroundColor: "primary.main",
+                color: "white",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ cursor: "pointer", marginBottom: "10px" }}
+              >
+                {pantry.name}
+              </Typography>
+            </CardContent>
+          </NavLink>
+          <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+            <Form method="post" action={`/updatePantry/${pantry.id}`}>
+              <Button size="small" startIcon={<EditIcon />}>
+                Edit
+              </Button>
             </Form>
-            }
-            {pantries.map((pantry) => (
-              <Card key={pantry.id} sx={{ marginBottom: "10px", border: "1px solid blue", marginRight: 3 }}>
-                <CardContent>
-                  <NavLink to={`pantry/${pantry.id}`}>
-                <Typography sx={{ cursor: "pointer", marginBottom: "10px" }}>
-                  {pantry.name}
-                </Typography>
-                </NavLink>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Edit</Button>
-                  <Button size="small">Delete</Button>
-                </CardActions>
-              </Card>
-            ))}
-          </Box>
-    )
+            <Form method="post" action={`/deletePantry/${pantry.id}`}>
+              <Button size="small" startIcon={<HighlightOffIcon />}>
+                Delete
+              </Button>
+            </Form>
+          </CardActions>
+        </Card>
+      ))}
+    </Box>
+  );
 }
 
 Pantries.propTypes = {
