@@ -9,7 +9,8 @@
         "assets": ["./src/assets/*"],
         "lib": ["./src/lib/*"],
         "context": ["./src/context/*"],
-        "services": ["./src/services/*"]
+        "services": ["./src/services/*"],
+        "myfirebase": ["./src/firebase"],
       }
     }
   }

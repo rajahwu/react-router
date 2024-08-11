@@ -14,7 +14,15 @@ export default defineConfig({
       assets: "/src/assets",
       lib: "/src/lib",
       context: "/src/context",
-      services: "/src/services"
+      services: "/src/services",
+      myfirebase: "/src/firebase",
+    },
+    build: {
+      rollupOptions: {
+        external: [
+          'firebase/app'
+        ]
+      }
     }
   }
 })

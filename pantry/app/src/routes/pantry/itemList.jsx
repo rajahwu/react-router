@@ -16,7 +16,11 @@ import { Form, useLoaderData, useParams } from "react-router-dom";
 export default function PantryItemList() {
   const { pantryId } = useParams();
   const { pantries } = useLoaderData();
-  const selectedPantry = pantries.find((pantry) => pantry.id === pantryId);
+
+  // Check if pantries exist and find the selected pantry by pantryId
+  const selectedPantry = pantries ? pantries.find((pantry) => pantry.id === pantryId) : null;
+
+  // Safely handle the case where selectedPantry or items are undefined
   const items = selectedPantry ? selectedPantry.items : [];
 
   const [formList, setFormList] = useState([]);
@@ -49,12 +53,8 @@ export default function PantryItemList() {
       </Box>
 
       {formList.map((form) => (
-        <Form
-          key={form.id}
-          method="post"
-          action="addItem"
-        >
-          <input type="hiddeni" name="pantryId" value={selectedPantry.id} />
+        <Form key={form.id} method="post" action="addItem">
+          <input type="hidden" name="pantryId" value={selectedPantry?.id || ''} />
           <Box
             sx={{
               display: "flex",
@@ -164,13 +164,8 @@ export default function PantryItemList() {
                   </Form>
                 </Grid>
                 <Grid item xs={4}>
-                  <Form
-                    method="post"
-                    action={`/pantry/${pantryId}/removeItem`}
-                  >
-                    <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                    >
+                  <Form method="post" action={`/pantry/${pantryId}/removeItem`}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <TextField
                         name="quantity"
                         type="number"

@@ -108,13 +108,14 @@ export default function Pantries() {
             </CardContent>
           </NavLink>
           <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-            <Form method="post" action={`/updatePantry/${pantry.id}`}>
+            <Form method="post" action="update">
               <Button size="small" startIcon={<EditIcon />}>
                 Edit
               </Button>
             </Form>
-            <Form method="post" action={`/deletePantry/${pantry.id}`}>
-              <Button size="small" startIcon={<HighlightOffIcon />}>
+            <Form method="post" action="delete">
+              <input type="hidden" name="pantryId" value={pantry.id} />
+              <Button type="submit" size="small" startIcon={<HighlightOffIcon />}>
                 Delete
               </Button>
             </Form>
