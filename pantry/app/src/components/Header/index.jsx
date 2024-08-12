@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useAuth } from "context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useEffect } from "react";
 import { Form, NavLink, useNavigate } from "react-router-dom";
 

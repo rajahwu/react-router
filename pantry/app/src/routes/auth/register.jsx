@@ -1,9 +1,9 @@
 // routes/register.js
 import axios from "axios";
-import { useAuth } from "context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Form, redirect } from "react-router-dom";
-import { auth } from "/src/firebase";
+import { auth } from "../../firebase";
 
 // Loader function to check if user is already authenticated
 export async function loader() {

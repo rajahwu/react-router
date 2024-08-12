@@ -1,9 +1,9 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { useAuth } from "context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import PropTypes from "prop-types";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import pantryService from "services/firebase/pantryService";
+import pantryService from "../services/firebase/pantryService";
 
 export async function loader() {
   const auth = getAuth();

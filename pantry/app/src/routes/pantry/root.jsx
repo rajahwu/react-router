@@ -1,8 +1,8 @@
 import { Container, Grid } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Outlet, useLocation } from "react-router-dom";
-import Pantries from "routes/pantry/pantries";
-import pantryService from "services/firebase/pantryService";
+import Pantries from "./pantries";
+import pantryService from "../../services/firebase/pantryService";
 
 export async function loader() {
   const auth = getAuth();

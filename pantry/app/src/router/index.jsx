@@ -7,23 +7,23 @@ import {
 import Login, {
   action as loginAction,
   loader as loginLoader,
-} from "routes/auth/login";
-import { ProtectedRoute } from "routes/auth/ProtectedRoute";
+} from "../routes/auth/login";
+import { ProtectedRoute } from "../routes/auth/ProtectedRoute";
 import Register, {
   loader as registerLoader,
   action as registrationAction,
-} from "routes/auth/register";
-import SignOut, { action as signOutAction } from "routes/auth/signout";
-import Dashboard, { loader as dashboardLoader } from "routes/dashboard";
-import { action as addPantryAction } from "routes/pantry/add";
-import { action as addPantryItemAction } from "routes/pantry/addItem";
-import { action as deletePantryAction } from "routes/pantry/delete";
-import { action as deletePantryItemAction } from "routes/pantry/deleteItem";
-import PantryItemList from "routes/pantry/itemList";
-import PantryPage, { loader as pantryPageLoader } from "routes/pantry/root";
-import { action as updatePantryAction } from "routes/pantry/update";
-import { action as updatePantryItemAction } from "routes/pantry/updateItem";
-import Root from "routes/root";
+} from "../routes/auth/register";
+import SignOut, { action as signOutAction } from "../routes/auth/signout";
+import Dashboard, { loader as dashboardLoader } from "../routes/dashboard";
+import { action as addPantryAction } from "../routes/pantry/add";
+import { action as addPantryItemAction } from "../routes/pantry/addItem";
+import { action as deletePantryAction } from "../routes/pantry/delete";
+import { action as deletePantryItemAction } from "../routes/pantry/deleteItem";
+import PantryItemList from "../routes/pantry/itemList";
+import PantryPage, { loader as pantryPageLoader } from "../routes/pantry/root";
+import { action as updatePantryAction } from "../routes/pantry/update";
+import { action as updatePantryItemAction } from "../routes/pantry/updateItem";
+import Root from "../routes/root";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

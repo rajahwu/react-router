@@ -1,6 +1,6 @@
 // routes/pantry/addItem.js
 import { faker } from "@faker-js/faker";
-import { auth } from "myfirebase";
+import { auth } from "../../firebase";
 import { redirect } from "react-router-dom";
 import { PantryItem } from "../../models/Pantry";
 
