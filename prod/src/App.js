@@ -1,10 +1,11 @@
 // src/App.js
 import React from 'react';
+import SignIn from './sign-in';
 
 const App = () => {
   return (
     <div>
-      <h1>Hello, React with Webpack!</h1>
+      <SignIn />
     </div>
   );
 };
