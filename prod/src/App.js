@@ -1,13 +1,17 @@
 // src/App.js
 import React from 'react';
-import SignIn from './sign-in';
+import {
+  Route,
+  Routes
+} from "react-router-dom";
+import SignIn from './components/auth/sign-in';
 
 const App = () => {
   return (
-    <div>
-      <SignIn />
-    </div>
-  );
-};
+    <Routes>
+      <Route path="/" element={<SignIn />} />
+    </Routes>
+  )
+}
 
 export default App;
