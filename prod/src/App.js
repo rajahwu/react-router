@@ -1,33 +1,19 @@
 // src/App.js
+import { Container } from "@mui/material";
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header'; // Import the Header component
 
 const App = () => {
-  const { user } = useAuth();
-
-  React.useEffect(() => {
-    if (user) {
-      //TODO Add your navigation logic
-    }
-  }, [user]);
-
   return (
-    <div>
-      <nav>
-        <Link to="/">Home</Link>
-        {user ? (
-          <>
-          <Link to={`${user.displayName}/dashboard`}>Dashboard</Link>
-          <Link to={`${user.displayName}/profile`}>Profile</Link>
-          <Link to="signout">Sign Out</Link>
-          </>
-        ) :
-        <Link to="login">Sign In</Link>}
-
-      </nav>
-      <Outlet />
-    </div>
+    <>
+      <Header /> {/* Add Header component */}
+      <Container sx={{ marginTop: 8 }}> {/* Adjust marginTop to ensure content is below the header */}
+        <main>
+          <Outlet />
+        </main>
+      </Container>
+    </>
   );
 };
 
