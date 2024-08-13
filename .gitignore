@@ -27,3 +27,6 @@ dist-ssr
 .env.*
 firebase-adminsdk*.json
 .vercel
+
+# Local Netlify folder
+.netlify

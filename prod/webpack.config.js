@@ -12,7 +12,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
     }),
-    new Dotenv(), // Loads environment variables from .env file
+    new Dotenv({
+      path: './.env'
+    }), // Loads environment variables from .env file
   ],
   module: {
     rules: [
