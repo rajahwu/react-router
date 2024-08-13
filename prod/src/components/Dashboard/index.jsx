@@ -2,9 +2,10 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import PropTypes from "prop-types";
 import React from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import pantryService from "../../services/firebase/pantryService";
+import Pantries from "./Pantries";
 
 export async function loader() {
   const auth = getAuth();
@@ -23,15 +24,15 @@ export async function loader() {
 const Dashboard = () => {
   const { pantries } = useLoaderData();
   return (
-    <Container>
+    <Container sx={{ mt: 4 }}>
       <Grid container spacing={4} justifyContent="center" alignItems="stretch">
-        <Grid item xs={12} sm={6} md={4} sx={{ display: "flex" }}>
+        <Grid item xs={12} sm={6} md={4}>
           <UserProfile />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} sx={{ display: "flex" }}>
+        <Grid item xs={12} sm={6} md={4}>
           <Pantries pantries={pantries} />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} sx={{ display: "flex" }}>
+        <Grid item xs={12} sm={6} md={4}>
           <Settings />
         </Grid>
       </Grid>
@@ -48,23 +49,31 @@ function UserProfile() {
       sx={{
         textAlign: "center",
         p: 2,
-        border: "1px solid #ccc",
+        border: "1px solid #e0e0e0",
         borderRadius: "8px",
+        backgroundColor: "#fafafa",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       }}
     >
       {user ? (
         <>
-          <Typography variant="h5">{user.displayName}</Typography>
           <img
             src={user.photoURL}
             alt="User Avatar"
-            style={{ borderRadius: "50%", width: "100px", height: "100px" }}
+            style={{
+              borderRadius: "50%",
+              width: "100px",
+              height: "100px",
+              objectFit: "cover",
+              marginBottom: "8px",
+            }}
           />
+          <Typography variant="h6">{user.displayName}</Typography>
         </>
       ) : (
         <Typography variant="body1">No user signed in</Typography>
@@ -80,90 +89,6 @@ UserProfile.propTypes = {
   }),
 };
 
-function Pantries({ pantries }) {
-  const navigate = useNavigate();
-  return (
-    <Box
-      component="section"
-      sx={{
-        textAlign: "center",
-        p: 2,
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "start",
-      }}
-    >
-      <Typography variant="h5">Pantries</Typography>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {pantries.length ? (
-          pantries.map((pantry) => (
-            <li key={pantry.id}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "start",
-                  mb: 2,
-                }}
-              >
-                <Typography variant="body1">{pantry.name}</Typography>
-                <Box sx={{ display: "flex" }}>
-                  <img
-                    src={
-                      pantry.imageUrl ??
-                      "https://picsum.photos/100/100?random=1"
-                    }
-                    alt={pantry.imageAlt}
-                    style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: 5 }}
-                  />
-                  <Box>
-                    {pantry.items.length
-                      ? pantry.items.map((item) => (
-                          <span key={item.id}>{item.name}</span>
-                        ))
-                      : null}
-                    <Typography variant="body2">
-                      {pantry.items.length} items
-                    </Typography>
-                  </Box>
-                </Box>
-                {/* <Button variant="contained" onClick={() => navigate(`/pantry/${pantry.id}`)}>View</Button> */}
-              </Box>
-            </li>
-          ))
-        ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            <Typography variant="body2">No pantries available</Typography>
-            <Button variant="contained" onClick={() => navigate("/pantries")}>
-              + Pantry
-            </Button>
-          </Box>
-        )}
-      </ul>
-    </Box>
-  );
-}
-
-Pantries.propTypes = {
-  pantries: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      items: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-        })
-      ).isRequired,
-    })
-  ).isRequired,
-};
-
 function Settings() {
   return (
     <Box
@@ -171,23 +96,27 @@ function Settings() {
       sx={{
         textAlign: "center",
         p: 2,
-        border: "1px solid #ccc",
+        border: "1px solid #e0e0e0",
         borderRadius: "8px",
+        backgroundColor: "#fafafa",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       }}
     >
-      <Typography variant="h5">Settings</Typography>
+      <Typography variant="h6" sx={{ mb: 2 }}>Settings</Typography>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6">Modes</Typography>
-        <span>☀️</span>
-        <span>🌙</span>
+        <Typography variant="body1">Modes</Typography>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button variant="outlined">☀️ Day</Button>
+          <Button variant="outlined">🌙 Night</Button>
+        </Box>
       </Box>
       <Box>
-        <Typography variant="h6">Themes</Typography>
+        <Typography variant="body1">Themes</Typography>
         {/* TODO: Dropdown to choose theme */}
       </Box>
     </Box>
