@@ -10,9 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { auth } from "../../services/firebase";
-
-
+import { Form } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Copyright(props) {
   return (
@@ -32,16 +31,9 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const user = auth.currentUser;
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
+  const { user } = useAuth();
+  console.log(user);
+ 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -58,7 +50,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Form method="post" action={"/login"} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -103,7 +95,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </Form>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
