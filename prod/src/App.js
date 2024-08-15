@@ -2,14 +2,14 @@
 import { Container } from "@mui/material";
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header'; // Import the Header component
+import Header from './components/Header';
 
 
 const App = () => {
   return (
     <>
-      <Header /> {/* Add Header component */}
-      <Container sx={{ marginTop: 8 }}> {/* Adjust marginTop to ensure content is below the header */}
+      <Header />
+      <Container sx={{ marginTop: 8 }}>
         <main>
           <Outlet />
         </main>

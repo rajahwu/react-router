@@ -1,3 +1,5 @@
+import React from "react";
+
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -13,7 +15,7 @@ import {
 import { useState } from "react";
 import { Form, useLoaderData, useParams } from "react-router-dom";
 
-export default function PantryItemList() {
+export default function PantryItems() {
   const { pantryId } = useParams();
   const { pantries } = useLoaderData();
 

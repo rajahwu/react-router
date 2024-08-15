@@ -14,7 +14,7 @@ import {
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Form, NavLink, useLoaderData } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Pantries() {
   const { user } = useAuth();
