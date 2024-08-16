@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchImageUrl } from '../../services/giphy/fetchImageUrl';
+import { fetchImageUrl } from '../../../services/giphy/fetchImageUrl';
 import Carousel from './Carousel';
 
 const Pantries = ({ pantries }) => {

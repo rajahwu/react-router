@@ -1,7 +1,7 @@
 // src/components/Profile.js
 import { Box, Container, Typography } from "@mui/material";
 import React from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Profile() {
   const { user } = useAuth();

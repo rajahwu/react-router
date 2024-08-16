@@ -3,8 +3,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import PropTypes from "prop-types";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import pantryService from "../../services/firebase/pantryService";
+import { useAuth } from "../../../context/AuthContext";
+import pantryService from "../../../services/firebase/pantryService";
 import Pantries from "./Pantries";
 
 export async function loader() {

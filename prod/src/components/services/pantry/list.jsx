@@ -1,7 +1,6 @@
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import React, { useState } from "react";
+import { Form, NavLink, useLoaderData, useSubmit } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import {
   Box,
   Button,
@@ -9,16 +8,21 @@ import {
   CardActions,
   CardContent,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Form, NavLink, useLoaderData } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export default function Pantries() {
   const { user } = useAuth();
   const { pantries } = useLoaderData();
   const [pantryForms, setPantryForms] = useState([]);
+  const [editPantryId, setEditPantryId] = useState(null);
+  const [newTitle, setNewTitle] = useState("");
+  const submit = useSubmit();
 
   const handleAddPantryClick = () => {
     setPantryForms([...pantryForms, { id: pantryForms.length }]);
@@ -26,6 +30,37 @@ export default function Pantries() {
 
   const handleRemovePantryForm = (id) => {
     setPantryForms(pantryForms.filter((form) => form.id !== id));
+  };
+
+  const handleEditClick = (pantry) => {
+    setEditPantryId(pantry.id);
+    setNewTitle(pantry.name);
+  };
+
+  const handleCancelEdit = () => {
+    setEditPantryId(null);
+    setNewTitle("");
+  };
+
+  const handleTitleChange = (event) => {
+    setNewTitle(event.target.value);
+  };
+
+  const handleUpdateSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    submit(formData, { method: "post", action: "update" });
+    setEditPantryId(null);
+    setNewTitle("");
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    submit(formData, { method: "post", action: "add" });
+
+    // Clear the pantry forms after submission
+    setPantryForms([]);
   };
 
   return (
@@ -43,7 +78,7 @@ export default function Pantries() {
 
       {pantryForms.map((form) => (
         <Box key={form.id} sx={{ mb: 2 }}>
-          <Form method="post" action="add">
+          <Form method="post" action="add" onSubmit={handleFormSubmit}>
             <Box sx={{ display: "flex", gap: 2 }}>
               <input type="hidden" name="ownerId" value={user.uid} />
               <TextField
@@ -60,16 +95,16 @@ export default function Pantries() {
               >
                 <AddIcon />
               </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                onClick={() => handleRemovePantryForm(form.id)}
+              >
+                Cancel
+              </Button>
             </Box>
           </Form>
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ minWidth: "40px", padding: "4px 8px", mt: 1 }}
-            onClick={() => handleRemovePantryForm(form.id)}
-          >
-            <DeleteIcon />
-          </Button>
         </Box>
       ))}
 
@@ -79,46 +114,91 @@ export default function Pantries() {
           sx={{
             mb: 2,
             border: 1,
-            borderColor: 'divider',
+            borderColor: "divider",
             borderRadius: 1,
           }}
         >
-          <NavLink to={`${pantry.id}`} style={{ textDecoration: "none" }}>
-            {({ isActive }) => (
-            <CardContent
-              sx={{
-                backgroundColor: isActive ? "cyan" : "primary.main",
-                color: "white",
-                border: isActive ? '2px solid cyan' : '1px solid #ccc',
-                borderBottom: 1,
-                borderColor: 'divider',
-                padding: 2,
-                textDecoration: "none",
-              }}
-            >
-              <Typography variant="h6">
-                {pantry.name}
-              </Typography>
-            </CardContent>
-            )}
-          </NavLink>
-          <CardActions sx={{ justifyContent: "center" }}>
-            <Form method="post" action="update">
-              <Button size="small" startIcon={<EditIcon />}>
-                Edit
-              </Button>
-            </Form>
-            <Form method="post" action="delete">
+          {editPantryId === pantry.id ? (
+            <Form method="post" onSubmit={handleUpdateSubmit}>
               <input type="hidden" name="pantryId" value={pantry.id} />
-              <Button
-                type="submit"
-                size="small"
-                startIcon={<HighlightOffIcon />}
-              >
-                Delete
-              </Button>
+              <CardContent sx={{ padding: 2 }}>
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <TextField
+                    name="pantryName"
+                    value={newTitle}
+                    onChange={handleTitleChange}
+                    size="small"
+                    fullWidth
+                    required
+                    sx={{ alignItems: "center", justifyContent: "center" }}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                    sx={{ minWidth: "40px", padding: "4px 8px" }}
+                  >
+                    <SaveIcon />
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    sx={{ minWidth: "40px", padding: "12px 16px" }}
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </CardContent>
             </Form>
-          </CardActions>
+          ) : (
+            <>
+              <NavLink to={`${pantry.id}`} style={{ textDecoration: "none" }}>
+                {({ isActive }) => (
+                  <CardContent
+                    sx={{
+                      backgroundColor: isActive ? "cyan" : "primary.main",
+                      color: "white",
+                      border: isActive ? "2px solid cyan" : "1px solid #ccc",
+                      padding: 2,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Typography variant="h6">{pantry.name}</Typography>
+                  </CardContent>
+                )}
+              </NavLink>
+              <CardActions
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "0 8px",
+                }}
+              >
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <Button
+                    size="small"
+                    startIcon={<EditIcon />}
+                    onClick={() => handleEditClick(pantry)}
+                  >
+                    <Typography variant="caption">Edit</Typography>
+                  </Button>
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <Form method="post" action="delete">
+                    <input type="hidden" name="pantryId" value={pantry.id} />
+                    <Button
+                      type="submit"
+                      size="small"
+                      startIcon={<HighlightOffIcon />}
+                    >
+                      <Typography variant="caption">Delete</Typography>
+                    </Button>
+                  </Form>
+                </Box>
+              </CardActions>
+            </>
+          )}
         </Card>
       ))}
     </Box>

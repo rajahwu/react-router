@@ -5,9 +5,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import SignIn from "./components/auth/Login";
 import SignOut from "./components/auth/SignOut";
-import Dashboard, { loader as dashboardLoader } from "./components/Dashboard";
-import LandingPage from "./components/LandingPage";
-import Profile from "./components/Profile";
+import Dashboard, { loader as dashboardLoader } from "./components/root/Dashboard";
+import LandingPage from "./components/root/LandingPage";
+import Profile from "./components/root/Profile";
 import PantryItems from "./components/services/pantry/items";
 import PantryServicePage from "./components/services/pantry/root";
 import { AuthProvider } from "./context/AuthContext";
@@ -47,9 +47,9 @@ const router = createBrowserRouter([
                 index: true,
                 element: <div>Select Panty to Display Items</div>,
               },
-              {path: "add", action: addPantry},
-              {path: "update", action: updatePantry},
-              {path: "delete", action: deletePantry},
+              {path: "add", action: addPantry, element: null},
+              {path: "update", action: updatePantry, element: null},
+              {path: "delete", action: deletePantry, element: null},
               {
                 path: ":pantryId",
                 element: <PantryItems />,

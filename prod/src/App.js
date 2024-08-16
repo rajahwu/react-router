@@ -1,7 +1,8 @@
 import { Box, Container } from "@mui/material";
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/root/Header';
+import Footer from './components/root/Footer';
 
 const App = () => {
   return (

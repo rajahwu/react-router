@@ -8,7 +8,7 @@ export async function action({ request }) {
   
   try {
     const newPantry = await Pantry.create(name, ownerId);
-    return newPantry; // return the newly created pantry or redirect as needed
+    return { success: true, pantry: newPantry };
   } catch (error) {
     console.error("Failed to create pantry:", error);
     return { error: "Failed to create pantry." };
