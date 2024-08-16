@@ -9,7 +9,7 @@ import {
   CardActions,
   CardContent,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -20,6 +20,16 @@ export default function Pantries() {
   const { user } = useAuth();
   const { pantries } = useLoaderData();
   const [pantryForms, setPantryForms] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   const handleAddPantryClick = () => {
     setPantryForms([...pantryForms, { id: pantryForms.length }]);
@@ -109,9 +119,11 @@ export default function Pantries() {
           </NavLink>
           <CardActions sx={{ display: "flex", justifyContent: "center" }}>
             <Form method="post" action="update">
+              <>
               <Button size="small" startIcon={<EditIcon />}>
                 Edit
               </Button>
+              </>
             </Form>
             <Form method="post" action="delete">
               <input type="hidden" name="pantryId" value={pantry.id} />

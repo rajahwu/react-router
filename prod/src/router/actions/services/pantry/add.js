@@ -1,5 +1,5 @@
 // routes/pantry/addPantry.js
-import { Pantry } from "../../models/Pantry";
+import { Pantry } from "../../../../models/Pantry";
 
 export async function action({ request }) {
   const formData = await request.formData();

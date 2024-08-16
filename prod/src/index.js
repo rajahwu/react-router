@@ -1,43 +1,67 @@
 // src/index.js
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import App from './App';
-import SignIn from './components/auth/Login';
-import SignOut from './components/auth/SignOut';
-import Dashboard, { loader as dashboardLoader } from './components/Dashboard';
-import PantryItems from './components/services/pantry/PantryItems';
-import PantryServicePage from './components/services/pantry/root';
-import { AuthProvider } from './context/AuthContext';
-import { action as loginAction } from './router/actions/login';
-import { action as signOutAction } from './router/actions/signout';
-import { loader as PantryServiceLoader } from './router/loaders/pantry';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import SignIn from "./components/auth/Login";
+import SignOut from "./components/auth/SignOut";
+import Dashboard, { loader as dashboardLoader } from "./components/Dashboard";
+import PantryItems from "./components/services/pantry/items";
+import PantryServicePage from "./components/services/pantry/root";
+import { AuthProvider } from "./context/AuthContext";
+import { action as loginAction } from "./router/actions/login";
+import { action as addPantry } from "./router/actions/services/pantry/add";
+import { action as deletePantry } from "./router/actions/services/pantry/delete";
+import { action as updatePantry } from "./router/actions/services/pantry/update";
+import { action as signOutAction } from "./router/actions/signout";
+import { loader as PantryServiceLoader } from "./router/loaders/pantry";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       { index: true, element: <div>Home</div> },
-      { path: 'register', element: <div>Register</div> },
-      { path: 'login', element: <SignIn />, action: loginAction },
-      { path: 'signout', element: <SignOut />, action: signOutAction },
-      { path: ':username/dashboard', element: <Dashboard />, loader: dashboardLoader },
-      { path: ':username/profile', element: <div>Profile</div> },
+      { path: "register", element: <div>Register</div> },
+      { path: "login", element: <SignIn />, action: loginAction },
+      { path: "signout", element: <SignOut />, action: signOutAction },
       {
-        path: ':username/pantries',
-        element: <PantryServicePage />,
-        loader: PantryServiceLoader,
+        path: ":username",
         children: [
-          { index: true, element: <div>Select Panty to Display Items</div> },
-          { path: ':pantryId', element: <PantryItems />, loader: PantryServiceLoader },
-        ]
-      }
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+            loader: dashboardLoader,
+          },
+          { path: "profile", element: <div>Profile</div> },
+          {
+            path: "pantries",
+            element: <PantryServicePage />,
+            loader: PantryServiceLoader,
+            children: [
+              {
+                index: true,
+                element: <div>Select Panty to Display Items</div>,
+              },
+              {path: "add", action: addPantry},
+              {path: "update", action: updatePantry},
+              {path: "delete", action: deletePantry},
+              {
+                path: ":pantryId",
+                element: <PantryItems />,
+                loader: PantryServiceLoader,
+                children: [
+                ],
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ]);
 
-const domNode = document.getElementById('root');
+const domNode = document.getElementById("root");
 const root = createRoot(domNode);
 
 root.render(

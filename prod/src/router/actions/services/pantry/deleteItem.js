@@ -1,6 +1,6 @@
 // routes/pantry/deleteItem.js
 
-import { PantryItem } from "../../models/Pantry";
+import { PantryItem } from "../../../../models/Pantry";
 
 export async function action({ request }) {
   const formData = await request.formData();

@@ -2,7 +2,7 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Pantries from "./pantries";
+import Pantries from "./list";
 
 export default function Root() {
   const path = useLocation().pathname;

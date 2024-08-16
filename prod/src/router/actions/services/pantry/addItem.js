@@ -1,8 +1,8 @@
 // routes/pantry/addItem.js
 import { faker } from "@faker-js/faker";
 import { redirect } from "react-router-dom";
-import { PantryItem } from "../../models/Pantry";
-import { auth } from "../../services/firebase";
+import { PantryItem } from "../../../../models/Pantry";
+import { auth } from "../../../../services/firebase";
 
 export async function action({ request }) {
   const user = auth.currentUser;
