@@ -7,11 +7,7 @@ const demoUser = {
     password: "password",
     };
 
-export async function action({ request }) {
-    const formData = await request.formData();
-    const email = formData.get("email");
-    const password = formData.get("password");
-  
+export async function action() {
     try {
       await signInWithEmailAndPassword(auth, demoUser.email, demoUser.password);
       return redirect(`/${auth.currentUser.displayName}/dashboard`);

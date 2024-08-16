@@ -11,7 +11,6 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Form, NavLink, useLoaderData } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
@@ -20,16 +19,6 @@ export default function Pantries() {
   const { user } = useAuth();
   const { pantries } = useLoaderData();
   const [pantryForms, setPantryForms] = useState([]);
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
 
   const handleAddPantryClick = () => {
     setPantryForms([...pantryForms, { id: pantryForms.length }]);
@@ -40,15 +29,8 @@ export default function Pantries() {
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 3,
-          justifyContent: "baseline",
-          marginBottom: "10px",
-        }}
-      >
+    <Box sx={{ padding: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <Typography variant="h6">Pantries</Typography>
         <Button
           variant="contained"
@@ -60,7 +42,7 @@ export default function Pantries() {
       </Box>
 
       {pantryForms.map((form) => (
-        <Box key={form.id} sx={{ marginBottom: "10px", marginRight: 2 }}>
+        <Box key={form.id} sx={{ mb: 2 }}>
           <Form method="post" action="add">
             <Box sx={{ display: "flex", gap: 2 }}>
               <input type="hidden" name="ownerId" value={user.uid} />
@@ -68,7 +50,6 @@ export default function Pantries() {
                 name="pantryName"
                 type="text"
                 placeholder="Pantry Name"
-                inputProps={{ min: 1 }}
                 size="small"
                 required
               />
@@ -83,8 +64,8 @@ export default function Pantries() {
           </Form>
           <Button
             variant="outlined"
-            color="secondary"
-            sx={{ minWidth: "40px", padding: "4px 8px" }}
+            color="error"
+            sx={{ minWidth: "40px", padding: "4px 8px", mt: 1 }}
             onClick={() => handleRemovePantryForm(form.id)}
           >
             <DeleteIcon />
@@ -96,38 +77,44 @@ export default function Pantries() {
         <Card
           key={pantry.id}
           sx={{
-            marginBottom: "10px",
-            border: "1px solid blue",
-            marginRight: 3,
+            mb: 2,
+            border: 1,
+            borderColor: 'divider',
+            borderRadius: 1,
           }}
         >
-          <NavLink to={`${pantry.id}`}>
+          <NavLink to={`${pantry.id}`} style={{ textDecoration: "none" }}>
+            {({ isActive }) => (
             <CardContent
               sx={{
-                borderBottom: "2px solid black",
-                backgroundColor: "primary.main",
+                backgroundColor: isActive ? "cyan" : "primary.main",
                 color: "white",
+                border: isActive ? '2px solid cyan' : '1px solid #ccc',
+                borderBottom: 1,
+                borderColor: 'divider',
+                padding: 2,
+                textDecoration: "none",
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{ cursor: "pointer", marginBottom: "10px" }}
-              >
+              <Typography variant="h6">
                 {pantry.name}
               </Typography>
             </CardContent>
+            )}
           </NavLink>
-          <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+          <CardActions sx={{ justifyContent: "center" }}>
             <Form method="post" action="update">
-              <>
               <Button size="small" startIcon={<EditIcon />}>
                 Edit
               </Button>
-              </>
             </Form>
             <Form method="post" action="delete">
               <input type="hidden" name="pantryId" value={pantry.id} />
-              <Button type="submit" size="small" startIcon={<HighlightOffIcon />}>
+              <Button
+                type="submit"
+                size="small"
+                startIcon={<HighlightOffIcon />}
+              >
                 Delete
               </Button>
             </Form>
@@ -137,7 +124,3 @@ export default function Pantries() {
     </Box>
   );
 }
-
-Pantries.propTypes = {
-  isAddPantry: PropTypes.bool,
-};

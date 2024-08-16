@@ -1,5 +1,3 @@
-import React from "react";
-
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -12,19 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form, useLoaderData, useParams } from "react-router-dom";
 
 export default function PantryItems() {
   const { pantryId } = useParams();
   const { pantries } = useLoaderData();
 
-  // Check if pantries exist and find the selected pantry by pantryId
   const selectedPantry = pantries ? pantries.find((pantry) => pantry.id === pantryId) : null;
-
-  // Safely handle the case where selectedPantry or items are undefined
   const items = selectedPantry ? selectedPantry.items : [];
-
   const [formList, setFormList] = useState([]);
 
   const handleAddItemClick = () => {
@@ -36,17 +30,15 @@ export default function PantryItems() {
   };
 
   return (
-    <Box id="main" sx={{ marginRight: 3 }}>
-      <Box sx={{ display: "flex", gap: 3, marginBottom: "10px" }}>
+    <Box sx={{ padding: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <Typography variant="h6">
-          {selectedPantry
-            ? `Items in ${selectedPantry.name}`
-            : "Select a pantry to see items"}
+          {selectedPantry ? `Items in ${selectedPantry.name}` : "Select a pantry to see items"}
         </Typography>
         {selectedPantry && (
           <Button
             variant="contained"
-            sx={{ marginBottom: "10px" }}
+            startIcon={<AddIcon />}
             onClick={handleAddItemClick}
           >
             + Add Item
@@ -61,7 +53,7 @@ export default function PantryItems() {
             sx={{
               display: "flex",
               gap: 2,
-              marginBottom: "20px",
+              mb: 2,
               alignItems: "center",
             }}
           >
@@ -96,7 +88,7 @@ export default function PantryItems() {
             </Button>
             <Button
               variant="outlined"
-              color="secondary"
+              color="error"
               sx={{ minWidth: "40px", padding: "4px 8px" }}
               onClick={() => handleRemoveForm(form.id)}
             >
@@ -114,9 +106,11 @@ export default function PantryItems() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                marginBottom: "10px",
-                padding: "10px",
-                border: "1px solid blue",
+                mb: 2,
+                p: 2,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1
               }}
             >
               <Grid container alignItems="center" spacing={2}>
@@ -132,64 +126,42 @@ export default function PantryItems() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={4}>
                   <Typography variant="body1">{item.name}</Typography>
                   <Typography variant="body2" color="textSecondary">
                     {item.quantity} {item.unit + (item.quantity > 1 ? "s" : "")}
                   </Typography>
                 </Grid>
                 <Grid item xs={4}>
-                  <Form method="post" action={`/pantry/${pantryId}/addItem`}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <TextField
-                        name="quantity"
-                        type="number"
-                        inputProps={{ min: 1 }}
-                        defaultValue={1}
-                        size="small"
-                        sx={{ width: 60 }}
-                      />
-                      <Typography variant="body2" color="textSecondary">
-                        {item.unit}
-                      </Typography>
-                      <input type="hidden" name="itemId" value={item.id} />
-                      <Button
-                        type="submit"
-                        size="small"
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        sx={{ minWidth: "40px", padding: "4px 8px" }}
-                      >
-                        Add
-                      </Button>
-                    </Box>
-                  </Form>
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      startIcon={<RemoveIcon />}
+                    >
+                      Remove
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      startIcon={<AddIcon />}
+                    >
+                      Add
+                    </Button>
+                  </Box>
                 </Grid>
-                <Grid item xs={4}>
-                  <Form method="post" action={`/pantry/${pantryId}/removeItem`}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <TextField
-                        name="quantity"
-                        type="number"
-                        inputProps={{ min: 1 }}
-                        defaultValue={1}
-                        size="small"
-                        sx={{ width: 60 }}
-                      />
-                      <Typography variant="body2" color="textSecondary">
-                        {item.unit}
-                      </Typography>
-                      <input type="hidden" name="itemId" value={item.id} />
-                      <Button
-                        type="submit"
-                        size="small"
-                        variant="contained"
-                        startIcon={<RemoveIcon />}
-                        sx={{ minWidth: "40px", padding: "4px 8px" }}
-                      >
-                        Remove
-                      </Button>
-                    </Box>
+                <Grid item xs={2}>
+                  <Form method="post" action="deleteItem">
+                    <input type="hidden" name="itemId" value={item.id} />
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete
+                    </Button>
                   </Form>
                 </Grid>
               </Grid>

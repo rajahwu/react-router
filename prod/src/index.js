@@ -11,11 +11,12 @@ import Profile from "./components/Profile";
 import PantryItems from "./components/services/pantry/items";
 import PantryServicePage from "./components/services/pantry/root";
 import { AuthProvider } from "./context/AuthContext";
+import { action as demoSignInAction } from "./router/actions/auth/demo";
 import { action as loginAction } from "./router/actions/auth/login";
+import { action as signOutAction } from "./router/actions/auth/signout";
 import { action as addPantry } from "./router/actions/services/pantry/add";
 import { action as deletePantry } from "./router/actions/services/pantry/delete";
 import { action as updatePantry } from "./router/actions/services/pantry/update";
-import { action as signOutAction } from "./router/actions/auth/signout";
 import { loader as PantryServiceLoader } from "./router/loaders/pantry";
 
 const router = createBrowserRouter([
@@ -24,10 +25,10 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <LandingPage /> },
-      { path: "register", element: <div>Register</div> },
+      // { path: "register", element: <div>Register</div> },
       { path: "login", element: <SignIn />, action: loginAction },
       { path: "signout", element: <SignOut />, action: signOutAction },
-      { path: "demo-signin", element: <div>Demo Sign In</div> },
+      { path: "demo-signin", action: demoSignInAction },
       {
         path: ":username",
         children: [

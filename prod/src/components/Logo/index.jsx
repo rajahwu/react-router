@@ -16,7 +16,7 @@ function Logo() {
             justifyContent: 'center',
           }}
         >
-          <img src="assets/logo-color.png" height={25} width={25} alt="Logo" />
+          <img src="/assets/logo-color.png" height={25} width={25} alt="Logo" />
         </Box>
         <Typography variant="h6" sx={{ ml: 1 }}>
           Pantry Management

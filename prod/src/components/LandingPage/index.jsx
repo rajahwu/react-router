@@ -1,20 +1,14 @@
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 export default function LandingPage() {
   const { user } = useAuth();
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleDemoSignIn = () => {
-    // Navigate to demo sign in page or logic for demo sign in
-    navigate('/demo-signin');
-  };
 
   return (
     <Container sx={{ textAlign: "center", mt: 4 }}>
@@ -71,14 +65,16 @@ export default function LandingPage() {
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Registration is currently unavailable for this application. If you would like to try out the app, please sign in as a demo user.
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-            onClick={handleDemoSignIn}
-          >
-            Sign In as Demo User
-          </Button>
+          <Form method="post" action="/demo-signin">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+            >
+              Sign In as Demo User
+            </Button>
+          </Form>
         </Box>
       </Modal>
     </Container>
