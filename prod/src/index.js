@@ -6,6 +6,7 @@ import App from "./App";
 import SignIn from "./components/auth/Login";
 import SignOut from "./components/auth/SignOut";
 import Dashboard, { loader as dashboardLoader } from "./components/Dashboard";
+import LandingPage from "./components/LandingPage";
 import PantryItems from "./components/services/pantry/items";
 import PantryServicePage from "./components/services/pantry/root";
 import { AuthProvider } from "./context/AuthContext";
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { index: true, element: <div>Home</div> },
+      { index: true, element: <LandingPage /> },
       { path: "register", element: <div>Register</div> },
       { path: "login", element: <SignIn />, action: loginAction },
       { path: "signout", element: <SignOut />, action: signOutAction },

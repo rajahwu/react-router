@@ -3,6 +3,7 @@ import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import Logo from "../Logo";
 
 export default function Header() {
     const { user } = useAuth();
@@ -11,9 +12,7 @@ export default function Header() {
         <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0 }}>
             <Toolbar>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    <NavLink to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-                        App
-                    </NavLink>
+                  <Logo />
                 </Typography>
                 <nav>
                     <Grid container spacing={2}>
