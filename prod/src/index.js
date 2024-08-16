@@ -7,6 +7,7 @@ import SignIn from "./components/auth/Login";
 import SignOut from "./components/auth/SignOut";
 import Dashboard, { loader as dashboardLoader } from "./components/Dashboard";
 import LandingPage from "./components/LandingPage";
+import Profile from "./components/Profile";
 import PantryItems from "./components/services/pantry/items";
 import PantryServicePage from "./components/services/pantry/root";
 import { AuthProvider } from "./context/AuthContext";
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "register", element: <div>Register</div> },
       { path: "login", element: <SignIn />, action: loginAction },
       { path: "signout", element: <SignOut />, action: signOutAction },
+      { path: "demo-signin", element: <div>Demo Sign In</div> },
       {
         path: ":username",
         children: [
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
             element: <Dashboard />,
             loader: dashboardLoader,
           },
-          { path: "profile", element: <div>Profile</div> },
+          { path: "profile", element: <Profile /> },
           {
             path: "pantries",
             element: <PantryServicePage />,

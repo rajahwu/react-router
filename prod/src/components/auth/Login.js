@@ -10,8 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { Form } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { Form } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 function Copyright(props) {
   return (
@@ -26,14 +26,37 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const { user } = useAuth();
-  console.log(user);
- 
+
+  if (user) {
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              You are already signed in.
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              You are already signed in. Please <Link href="/dashboard">go to your dashboard</Link> or <Link href="/logout">sign out</Link> if you wish to log in with a different account.
+            </Typography>
+          </Box>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -46,7 +69,6 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-        
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -90,7 +112,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
