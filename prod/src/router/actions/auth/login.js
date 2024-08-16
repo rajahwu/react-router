@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { redirect } from "react-router-dom";
-import { auth } from "../../services/firebase";
+import { auth } from "../../../services/firebase";
 
 export async function action({ request }) {
     const formData = await request.formData();

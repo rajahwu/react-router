@@ -11,11 +11,11 @@ import Profile from "./components/Profile";
 import PantryItems from "./components/services/pantry/items";
 import PantryServicePage from "./components/services/pantry/root";
 import { AuthProvider } from "./context/AuthContext";
-import { action as loginAction } from "./router/actions/login";
+import { action as loginAction } from "./router/actions/auth/login";
 import { action as addPantry } from "./router/actions/services/pantry/add";
 import { action as deletePantry } from "./router/actions/services/pantry/delete";
 import { action as updatePantry } from "./router/actions/services/pantry/update";
-import { action as signOutAction } from "./router/actions/signout";
+import { action as signOutAction } from "./router/actions/auth/signout";
 import { loader as PantryServiceLoader } from "./router/loaders/pantry";
 
 const router = createBrowserRouter([
