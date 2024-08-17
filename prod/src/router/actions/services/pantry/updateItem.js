@@ -10,7 +10,6 @@ export async function action({ request }) {
   const quantity = formData.get("quantity");
   const unit = formData.get("unit");
   const expiryDate = formData.get("expiryDate");
-  console.log({itemId, pantryId, name, quantity, unit, expiryDate})
 
   try {
     const item = await PantryItem.getById(pantryId, itemId);

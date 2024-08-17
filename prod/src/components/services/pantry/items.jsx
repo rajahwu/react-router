@@ -21,6 +21,7 @@ import {
   useParams,
   useActionData,
   useNavigate,
+  useSubmit,
 } from "react-router-dom";
 
 export default function PantryItems() {
@@ -28,6 +29,7 @@ export default function PantryItems() {
   const { pantries } = useLoaderData();
   const actionData = useActionData();
   const navigate = useNavigate();
+  const submit = useSubmit();
 
   const [formList, setFormList] = useState([]);
   const [editItemId, setEditItemId] = useState(null);
@@ -37,7 +39,6 @@ export default function PantryItems() {
     unit: "",
     expiryDate: null,
   });
-  const [refresh, setRefresh] = useState(false);
 
   const selectedPantry = pantries
     ? pantries.find((pantry) => pantry.id === pantryId)
@@ -54,16 +55,15 @@ export default function PantryItems() {
 
   useEffect(() => {
     if (actionData?.success) {
-      setFormList([]);
-      setRefresh(!refresh);
-    }
-  }, [actionData, refresh]);
 
-  useEffect(() => {
-    if (refresh) {
-      navigate(0);
+      // const pantryToShow = actionData.pantryId || pantryId;
+      
+      // navigate(`/pantry/${pantryToShow}`, { replace: true });
+
+      setFormList([]);
+      setEditItemId(null);
     }
-  }, [refresh, navigate]);
+  }, [actionData]);
 
   const handleEditClick = (item) => {
     setEditItemId(item.id);
@@ -88,6 +88,11 @@ export default function PantryItems() {
 
   const handleCancelEdit = () => {
     setEditItemId(null);
+    setEditedItem({ name: "", quantity: "", unit: "", expiryDate: null });
+  };
+
+  const handleFormSubmit = (event) => {
+    submit(event.currentTarget, { replace: true });
   };
 
   return (
@@ -111,7 +116,7 @@ export default function PantryItems() {
 
       {formList.map((form) => (
         <Box key={form.id} sx={{ mb: 2 }}>
-          <Form method="post" action="addItem">
+          <Form method="post" action="addItem" onSubmit={handleFormSubmit}>
             <input
               type="hidden"
               name="pantryId"
@@ -192,7 +197,7 @@ export default function PantryItems() {
             }}
           >
             {editItemId === item.id ? (
-              <Form method="post" action="updateItem">
+              <Form method="post" action="updateItem" onSubmit={handleFormSubmit}>
                 <input type="hidden" name="itemId" value={item.id} />
                 <input type="hidden" name="pantryId" value={pantryId} />
                 <CardContent sx={{ padding: 2 }}>
@@ -287,11 +292,9 @@ export default function PantryItems() {
                       {item.quantity}{" "}
                       {item.unit + (item.quantity > 1 ? "s" : "")}
                     </Typography>
-                    <Typography>
-                      {new Date(
-                        item.expiryDate.seconds * 1000,
-                      ).toLocaleDateString()}
-                    </Typography>
+                    {/* <Typography>
+                    {item.expiryDate.seconds} 
+                    </Typography> */}
                   </CardContent>
                   <CardActions
                     sx={{
@@ -316,18 +319,26 @@ export default function PantryItems() {
                         <Typography variant="caption">Edit</Typography>
                       </Button>
                     </Box>
-                    <Form method="post" action="deleteItem">
-                      <input type="hidden" name="itemId" value={item.id} />
-                      <input type="hidden" name="pantryId" value={pantryId} />
-                      <Button
-                        type="submit"
-                        color="error"
-                        size="small"
-                        startIcon={<HighlightOffIcon />}
-                      >
-                        <Typography variant="caption">Delete</Typography>
-                      </Button>
-                    </Form>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Form method="post" action="deleteItem">
+                        <input type="hidden" name="itemId" value={item.id} />
+                        <input type="hidden" name="pantryId" value={pantryId} />
+                        <Button
+                          type="submit"
+                          variant="small"
+                          size="small"
+                          startIcon={<DeleteIcon />}
+                        >
+                          <Typography variant="caption">Delete</Typography>
+                        </Button>
+                      </Form>
+                    </Box>
                   </CardActions>
                 </Box>
               </>
