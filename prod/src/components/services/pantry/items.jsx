@@ -1,31 +1,27 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import RemoveIcon from "@mui/icons-material/Remove";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditIcon from "@mui/icons-material/Edit";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import * as dayjs from "dayjs";
 import {
   Box,
   Button,
   Card,
   CardMedia,
-  Grid,
   TextField,
   Typography,
-  Container,
   CardContent,
   CardActions,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import {
-  NavLink,
   Form,
   useLoaderData,
   useParams,
   useActionData,
   useNavigate,
 } from "react-router-dom";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import EditIcon from "@mui/icons-material/Edit";
-
 
 export default function PantryItems() {
   const { pantryId } = useParams();
@@ -34,6 +30,13 @@ export default function PantryItems() {
   const navigate = useNavigate();
 
   const [formList, setFormList] = useState([]);
+  const [editItemId, setEditItemId] = useState(null);
+  const [editedItem, setEditedItem] = useState({
+    name: "",
+    quantity: "",
+    unit: "",
+    expiryDate: null,
+  });
   const [refresh, setRefresh] = useState(false);
 
   const selectedPantry = pantries
@@ -62,6 +65,31 @@ export default function PantryItems() {
     }
   }, [refresh, navigate]);
 
+  const handleEditClick = (item) => {
+    setEditItemId(item.id);
+    setEditedItem({
+      name: item.name,
+      quantity: item.quantity,
+      unit: item.unit,
+      expiryDate: item.expiryDate
+        ? new Date(item.expiryDate.seconds * 1000)
+        : null,
+    });
+  };
+
+  const handleItemChange = (e) => {
+    const { name, value } = e.target;
+    setEditedItem((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleDateChange = (date) => {
+    setEditedItem((prevState) => ({ ...prevState, expiryDate: date }));
+  };
+
+  const handleCancelEdit = () => {
+    setEditItemId(null);
+  };
+
   return (
     <Box sx={{ padding: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
@@ -83,7 +111,7 @@ export default function PantryItems() {
 
       {formList.map((form) => (
         <Box key={form.id} sx={{ mb: 2 }}>
-          <Form key={form.id} method="post" action="addItem">
+          <Form method="post" action="addItem">
             <input
               type="hidden"
               name="pantryId"
@@ -95,7 +123,6 @@ export default function PantryItems() {
                 gridTemplateColumns: "repeat(2, 1fr)",
                 gap: 2,
                 mb: 2,
-                alignItems: "center",
               }}
             >
               <TextField
@@ -121,14 +148,12 @@ export default function PantryItems() {
                 fullWidth
               />
               <DatePicker
-                label="Expiration Date"
-                slotProps={{
-                  textField: {
-                    name: "expiryDate",
-                    variant: "outlined",
-                    fullWidth: true,
-                  },
-                }}
+                name="expiryDate"
+                value={
+                  editedItem.expiryDate ? dayjs(editedItem.expiryDate) : null
+                }
+                onChange={handleDateChange}
+                slotProps={{ TextField: 'outlined' }}
               />
             </Box>
             <Box sx={{ display: "flex", gap: 2 }}>
@@ -154,87 +179,161 @@ export default function PantryItems() {
         </Box>
       ))}
 
-      {selectedPantry && (
-        <>
-          {items.map((item) => (
-            <Card
-              key={item.id}
-              sx={{
-                border: 1,
-                borderColor: "divider",
-                borderRadius: 1,
-                display: "flex",
-                mb: 2
-              }}
-            >
-              <CardMedia
-                component="img"
-                sx={{ width: 151, height: '100%', objectFit: 'cover' }}
-                image="https://picsum.photos/50/50?random=1"
-                title={item.imageAlt}
-              />
-              <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                <CardContent
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "white",
-                    border: "1px solid #ccc",
-                    padding: 2,
-                    textDecoration: "none",
-                  }}
-                >
-                  <Typography variant="h6">{item.name}</Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    {item.quantity} {item.unit + (item.quantity > 1 ? "s" : "")}
-                  </Typography>
-                  <Typography>
-                    {new Date(item.expiryDate.seconds * 1000).toLocaleDateString()}
-                  </Typography>
-                </CardContent>
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "0 8px",
-                  }}
-                >
-                  <Box 
-                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
+      {selectedPantry &&
+        items.map((item) => (
+          <Card
+            key={item.id}
+            sx={{
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 1,
+              display: "flex",
+              mb: 2,
+            }}
+          >
+            {editItemId === item.id ? (
+              <Form method="post" action="updateItem">
+                <input type="hidden" name="itemId" value={item.id} />
+                <input type="hidden" name="pantryId" value={pantryId} />
+                <CardContent sx={{ padding: 2 }}>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(2, 1fr)",
+                      gap: 2,
+                    }}
                   >
-                    <Button
-                      variant="small"
-                      size="small"
-                      startIcon={<EditIcon />}
-                    >
-                      <Typography variant="caption">
-                      Edit
-                      </Typography>
-                    </Button>
+                    <TextField
+                      name="name"
+                      label="Item"
+                      variant="outlined"
+                      value={editedItem.name}
+                      onChange={handleItemChange}
+                      required
+                      fullWidth
+                    />
+                    <TextField
+                      name="quantity"
+                      label="Quantity"
+                      type="number"
+                      variant="outlined"
+                      value={editedItem.quantity}
+                      onChange={handleItemChange}
+                      required
+                      fullWidth
+                    />
+                    <TextField
+                      name="unit"
+                      label="Unit"
+                      variant="outlined"
+                      value={editedItem.unit}
+                      onChange={handleItemChange}
+                      required
+                      fullWidth
+                    />
+                    <DatePicker
+                      name="expiryDate"
+                      value={
+                        editedItem.expiryDate
+                          ? dayjs(editedItem.expiryDate)
+                          : null
+                      }
+                      onChange={handleDateChange}
+                      slotProps={{ TextField: 'outlined' }}
+                    />
                   </Box>
-                  <Form method="post" action="deleteItem">
-                    <input type="hidden" name="itemId" value={item.id} />
-                    <input type="hidden" name="pantryId" value={pantryId} />
+                  <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
                     <Button
                       type="submit"
-                      color="error"
-                      size="small"
-                      startIcon={<HighlightOffIcon />}
+                      variant="contained"
+                      sx={{ minWidth: "100px" }}
                     >
-                      <Typography variant="caption">
-                      Delete
-                      </Typography>
+                      Save
                     </Button>
-                  </Form>
-                </CardActions>
-              </Box>
-            </Card>
-          ))}
-        </>
-      )}
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      sx={{ minWidth: "40px", padding: "4px 8px" }}
+                      onClick={handleCancelEdit}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Form>
+            ) : (
+              <>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 151, height: "100%", objectFit: "cover" }}
+                  image="https://picsum.photos/50/50?random=1"
+                  title={item.imageAlt}
+                />
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+                >
+                  <CardContent
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "white",
+                      border: "1px solid #ccc",
+                      padding: 2,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Typography variant="h6">{item.name}</Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      {item.quantity}{" "}
+                      {item.unit + (item.quantity > 1 ? "s" : "")}
+                    </Typography>
+                    <Typography>
+                      {new Date(
+                        item.expiryDate.seconds * 1000,
+                      ).toLocaleDateString()}
+                    </Typography>
+                  </CardContent>
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "0 8px",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button
+                        variant="small"
+                        size="small"
+                        startIcon={<EditIcon />}
+                        onClick={() => handleEditClick(item)}
+                      >
+                        <Typography variant="caption">Edit</Typography>
+                      </Button>
+                    </Box>
+                    <Form method="post" action="deleteItem">
+                      <input type="hidden" name="itemId" value={item.id} />
+                      <input type="hidden" name="pantryId" value={pantryId} />
+                      <Button
+                        type="submit"
+                        color="error"
+                        size="small"
+                        startIcon={<HighlightOffIcon />}
+                      >
+                        <Typography variant="caption">Delete</Typography>
+                      </Button>
+                    </Form>
+                  </CardActions>
+                </Box>
+              </>
+            )}
+          </Card>
+        ))}
     </Box>
   );
 }

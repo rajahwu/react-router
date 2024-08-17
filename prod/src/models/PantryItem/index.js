@@ -44,8 +44,8 @@ class PantryItem {
     );
   }
 
-  async update(name, quantity, unit, expiryDate) {
-    const docRef = doc(db, "pantries", this.pantryId, "items", this.id);
+  async update(name, quantity, unit, expiryDate, pantryId) {
+    const docRef = doc(db, "pantries", pantryId, "items", this.id);
     await updateDoc(docRef, { name, quantity, unit, expiryDate });
     this.name = name;
     this.quantity = quantity;
