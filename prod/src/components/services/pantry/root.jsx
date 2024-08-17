@@ -9,7 +9,11 @@ export default function Root() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={4} sx={{ borderRight: 1, borderColor: 'divider', height: '100%' }}>
+      <Grid
+        item
+        xs={4}
+        sx={{ borderRight: 1, borderColor: "divider", height: "100%" }}
+      >
         <Pantries />
       </Grid>
       <Grid item xs={8}>

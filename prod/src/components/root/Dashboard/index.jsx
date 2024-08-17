@@ -107,7 +107,9 @@ function Settings() {
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       }}
     >
-      <Typography variant="h6" sx={{ mb: 2 }}>Settings</Typography>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Settings
+      </Typography>
       <Box sx={{ mb: 2 }}>
         <Typography variant="body1">Modes</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>

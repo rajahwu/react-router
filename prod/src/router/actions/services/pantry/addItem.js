@@ -1,7 +1,7 @@
 // routes/pantry/addItem.js
 import { faker } from "@faker-js/faker";
 import { redirect } from "react-router-dom";
-import { PantryItem } from "../../../../models/Pantry";
+import { PantryItem } from "../../../../models/PantryItem";
 import { auth } from "../../../../services/firebase";
 
 export async function action({ request }) {
@@ -14,9 +14,16 @@ export async function action({ request }) {
   const name = formData.get("name");
   const quantity = formData.get("quantity");
   const unit = formData.get("unit");
-  const expiryDate = formData.get("expiryDate") ?? faker.date.future({ weeks: 2 });
+  const expiryDate =
+    formData.get("expiryDate") ?? faker.date.future({ weeks: 2 });
   try {
-    const newItem = await PantryItem.create(name, quantity, unit, expiryDate, pantryId);
+    const newItem = await PantryItem.create(
+      name,
+      quantity,
+      unit,
+      expiryDate,
+      pantryId,
+    );
     return redirect(`/${user.displayName}/pantries/${newItem.pantryId}`);
   } catch (error) {
     console.error("Failed to add item:", error);

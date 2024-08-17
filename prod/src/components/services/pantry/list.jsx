@@ -175,7 +175,13 @@ export default function Pantries() {
                   padding: "0 8px",
                 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Button
                     size="small"
                     startIcon={<EditIcon />}
@@ -184,7 +190,13 @@ export default function Pantries() {
                     <Typography variant="caption">Edit</Typography>
                   </Button>
                 </Box>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Form method="post" action="delete">
                     <input type="hidden" name="pantryId" value={pantry.id} />
                     <Button

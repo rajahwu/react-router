@@ -5,7 +5,7 @@ export async function action({ request }) {
   const formData = await request.formData();
   const name = formData.get("pantryName");
   const ownerId = formData.get("ownerId");
-  
+
   try {
     const newPantry = await Pantry.create(name, ownerId);
     return { success: true, pantry: newPantry };

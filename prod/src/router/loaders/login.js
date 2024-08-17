@@ -2,10 +2,9 @@
 import { auth } from "../../services/firebase";
 
 export async function loader() {
-    const user = auth.currentUser;
-    if (user) {
-      return redirect(`/${user.displayName}/dashboard`);
-    }
-    return null;
+  const user = auth.currentUser;
+  if (user) {
+    return redirect(`/${user.displayName}/dashboard`);
   }
-  
+  return null;
+}

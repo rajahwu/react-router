@@ -3,7 +3,7 @@
 import { Pantry } from "../../../../models/Pantry";
 
 export async function action({ request }) {
- const formData = await request.formData();
+  const formData = await request.formData();
   const pantryId = formData.get("pantryId");
   try {
     await Pantry.deleteById(pantryId);

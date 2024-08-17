@@ -10,16 +10,28 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Form, useLoaderData, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  Form,
+  useLoaderData,
+  useParams,
+  useActionData,
+  useNavigate,
+} from "react-router-dom";
 
 export default function PantryItems() {
   const { pantryId } = useParams();
   const { pantries } = useLoaderData();
+  const actionData = useActionData();
+  const navigate = useNavigate();
 
-  const selectedPantry = pantries ? pantries.find((pantry) => pantry.id === pantryId) : null;
-  const items = selectedPantry ? selectedPantry.items : [];
   const [formList, setFormList] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  const selectedPantry = pantries
+    ? pantries.find((pantry) => pantry.id === pantryId)
+    : null;
+  const items = selectedPantry ? selectedPantry.items : [];
 
   const handleAddItemClick = () => {
     setFormList([...formList, { id: Date.now() }]);
@@ -29,11 +41,29 @@ export default function PantryItems() {
     setFormList(formList.filter((form) => form.id !== formId));
   };
 
+  // Use effect to handle form submission result
+  useEffect(() => {
+    if (actionData?.success) {
+      // Reset form list and trigger a refresh
+      setFormList([]);
+      setRefresh(!refresh); // Toggle refresh state
+    }
+  }, [actionData, refresh]);
+
+  // Use effect to refresh the list of items when the component mounts or refresh state changes
+  useEffect(() => {
+    if (refresh) {
+      navigate(0); // Reload the page to get updated data
+    }
+  }, [refresh, navigate]);
+
   return (
     <Box sx={{ padding: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <Typography variant="h6">
-          {selectedPantry ? `Items in ${selectedPantry.name}` : "Select a pantry to see items"}
+          {selectedPantry
+            ? `Items in ${selectedPantry.name}`
+            : "Select a pantry to see items"}
         </Typography>
         {selectedPantry && (
           <Button
@@ -41,14 +71,18 @@ export default function PantryItems() {
             startIcon={<AddIcon />}
             onClick={handleAddItemClick}
           >
-            + Add Item
+            Add Item
           </Button>
         )}
       </Box>
 
       {formList.map((form) => (
         <Form key={form.id} method="post" action="addItem">
-          <input type="hidden" name="pantryId" value={selectedPantry?.id || ''} />
+          <input
+            type="hidden"
+            name="pantryId"
+            value={selectedPantry?.id || ""}
+          />
           <Box
             sx={{
               display: "flex",
@@ -109,8 +143,8 @@ export default function PantryItems() {
                 mb: 2,
                 p: 2,
                 border: 1,
-                borderColor: 'divider',
-                borderRadius: 1
+                borderColor: "divider",
+                borderRadius: 1,
               }}
             >
               <Grid container alignItems="center" spacing={2}>
@@ -153,6 +187,7 @@ export default function PantryItems() {
                 <Grid item xs={2}>
                   <Form method="post" action="deleteItem">
                     <input type="hidden" name="itemId" value={item.id} />
+                    <input type="hidden" name="pantryId" value={pantryId} />
                     <Button
                       type="submit"
                       variant="outlined"

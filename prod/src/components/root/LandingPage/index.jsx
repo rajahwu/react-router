@@ -18,7 +18,7 @@ export default function LandingPage() {
       <Typography variant="h6" paragraph>
         Organize and manage your pantry items with ease.
       </Typography>
-      {!user &&
+      {!user && (
         <Box sx={{ mt: 4 }}>
           <Button
             component={Link}
@@ -29,15 +29,11 @@ export default function LandingPage() {
           >
             Login
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleOpen}
-          >
+          <Button variant="outlined" color="secondary" onClick={handleOpen}>
             Register
           </Button>
         </Box>
-      }
+      )}
 
       {/* Modal for registration */}
       <Modal
@@ -48,13 +44,13 @@ export default function LandingPage() {
       >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
+            bgcolor: "background.paper",
+            border: "2px solid #000",
             boxShadow: 24,
             p: 4,
           }}
@@ -63,7 +59,8 @@ export default function LandingPage() {
             Registration Unavailable
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
-            Registration is currently unavailable for this application. If you would like to try out the app, please sign in as a demo user.
+            Registration is currently unavailable for this application. If you
+            would like to try out the app, please sign in as a demo user.
           </Typography>
           <Form method="post" action="/demo-signin">
             <Button
