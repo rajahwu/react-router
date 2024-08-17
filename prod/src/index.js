@@ -5,9 +5,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import SignIn from "./components/auth/Login";
 import SignOut from "./components/auth/SignOut";
-import Dashboard, {
-  loader as dashboardLoader,
-} from "./components/root/Dashboard";
+import Dashboard, { loader as dashboardLoader } from "./components/root/Dashboard";
 import LandingPage from "./components/root/LandingPage";
 import Profile from "./components/root/Profile";
 import PantryItems from "./components/services/pantry/items";
@@ -34,12 +32,10 @@ const router = createBrowserRouter([
       { path: "login", element: <SignIn />, action: loginAction },
       { path: "signout", element: <SignOut />, action: signOutAction },
       { path: "demo-signin", action: demoSignInAction, element: null },
-
-      {
-        path: ":username",
-        children: [
-          {
-            path: "dashboard",
+      
+      { path: ":username",
+          children: [
+          { path: "dashboard",
             element: <Dashboard />,
             loader: dashboardLoader,
           },
@@ -53,17 +49,17 @@ const router = createBrowserRouter([
                 index: true,
                 element: <div>Select Panty to Display Items</div>,
               },
-              { path: "add", action: addPantry, element: null },
-              { path: "update", action: updatePantry, element: null },
-              { path: "delete", action: deletePantry, element: null },
+              {path: "add", action: addPantry, element: null},
+              {path: "update", action: updatePantry, element: null},
+              {path: "delete", action: deletePantry, element: null},
               {
                 path: ":pantryId",
                 element: <PantryItems />,
                 loader: PantryServiceLoader,
                 children: [
-                  { path: "addItem", action: addItem, element: null },
-                  { path: "updateItem", action: updateItem, element: null },
-                  { path: "deleteItem", action: deleteItem, element: null },
+                  {path: "addItem", action: addItem, element: null},
+                  {path: "updateItem", action: updateItem, element: null},
+                  {path: "deleteItem", action: deleteItem, element: null},
                 ],
               },
             ],
@@ -82,5 +78,5 @@ root.render(
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

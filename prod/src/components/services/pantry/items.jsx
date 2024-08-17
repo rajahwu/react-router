@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   Box,
   Button,
@@ -9,15 +10,22 @@ import {
   Grid,
   TextField,
   Typography,
+  Container,
+  CardContent,
+  CardActions,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import {
+  NavLink,
   Form,
   useLoaderData,
   useParams,
   useActionData,
   useNavigate,
 } from "react-router-dom";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditIcon from "@mui/icons-material/Edit";
+
 
 export default function PantryItems() {
   const { pantryId } = useParams();
@@ -41,19 +49,16 @@ export default function PantryItems() {
     setFormList(formList.filter((form) => form.id !== formId));
   };
 
-  // Use effect to handle form submission result
   useEffect(() => {
     if (actionData?.success) {
-      // Reset form list and trigger a refresh
       setFormList([]);
-      setRefresh(!refresh); // Toggle refresh state
+      setRefresh(!refresh);
     }
   }, [actionData, refresh]);
 
-  // Use effect to refresh the list of items when the component mounts or refresh state changes
   useEffect(() => {
     if (refresh) {
-      navigate(0); // Reload the page to get updated data
+      navigate(0);
     }
   }, [refresh, navigate]);
 
@@ -77,59 +82,75 @@ export default function PantryItems() {
       </Box>
 
       {formList.map((form) => (
-        <Form key={form.id} method="post" action="addItem">
-          <input
-            type="hidden"
-            name="pantryId"
-            value={selectedPantry?.id || ""}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              mb: 2,
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              name="name"
-              label="Item Name"
-              variant="outlined"
-              required
-              fullWidth
+        <Box key={form.id} sx={{ mb: 2 }}>
+          <Form key={form.id} method="post" action="addItem">
+            <input
+              type="hidden"
+              name="pantryId"
+              value={selectedPantry?.id || ""}
             />
-            <TextField
-              name="quantity"
-              label="Quantity"
-              type="number"
-              variant="outlined"
-              required
-              fullWidth
-            />
-            <TextField
-              name="unit"
-              label="Unit"
-              variant="outlined"
-              required
-              fullWidth
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ minWidth: "100px" }}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 2,
+                mb: 2,
+                alignItems: "center",
+              }}
             >
-              Add
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              sx={{ minWidth: "40px", padding: "4px 8px" }}
-              onClick={() => handleRemoveForm(form.id)}
-            >
-              <DeleteIcon />
-            </Button>
-          </Box>
-        </Form>
+              <TextField
+                name="name"
+                label="Item"
+                variant="outlined"
+                required
+                fullWidth
+              />
+              <TextField
+                name="quantity"
+                label="Quantity"
+                type="number"
+                variant="outlined"
+                required
+                fullWidth
+              />
+              <TextField
+                name="unit"
+                label="Unit"
+                variant="outlined"
+                required
+                fullWidth
+              />
+              <DatePicker
+                label="Expiration Date"
+                slotProps={{
+                  textField: {
+                    name: "expiryDate",
+                    variant: "outlined",
+                    fullWidth: true,
+                  },
+                }}
+              />
+            </Box>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<AddIcon />}
+                sx={{ minWidth: "100px" }}
+              >
+                Add Item
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{ minWidth: "40px", padding: "4px 8px" }}
+                onClick={() => handleRemoveForm(form.id)}
+              >
+                <DeleteIcon />
+              </Button>
+            </Box>
+          </Form>
+        </Box>
       ))}
 
       {selectedPantry && (
@@ -138,68 +159,80 @@ export default function PantryItems() {
             <Card
               key={item.id}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                mb: 2,
-                p: 2,
-                border: 1,
+                border: 2,
                 borderColor: "divider",
                 borderRadius: 1,
+                display: "flex",
+                mb: 2
               }}
             >
-              <Grid container alignItems="center" spacing={2}>
-                <Grid item xs={2}>
-                  <CardMedia
-                    component="img"
-                    image="https://picsum.photos/50/50?random=1"
-                    title={item.imageAlt}
-                    sx={{
-                      height: 50,
-                      width: 50,
-                      borderRadius: "50%",
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <Typography variant="body1">{item.name}</Typography>
-                  <Typography variant="body2" color="textSecondary">
+              <CardMedia
+                component="img"
+                sx={{ width: 151, height: '100%', objectFit: 'cover' }}
+                image="https://picsum.photos/50/50?random=1"
+                title={item.imageAlt}
+              />
+              <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                <NavLink style={{ textDecoration: "none" }}>
+                  {({isActive}) => (
+                <CardContent
+                  sx={{
+                    backgroundColor: isActive ? "cyan" : "primary.main",
+                    color: "white",
+                    border: isActive ? "2px solid cyan" : "1px solid #ccc",
+                    padding: 2,
+                    textDecoration: "none",
+                  }}
+                >
+                  <Typography variant="h6">{item.name}</Typography>
+                  <Typography variant="body1" color="textSecondary">
                     {item.quantity} {item.unit + (item.quantity > 1 ? "s" : "")}
                   </Typography>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ display: "flex", gap: 1 }}>
+                  <Typography>
+                    {new Date(item.expiryDate.seconds * 1000).toLocaleDateString()}
+                  </Typography>
+                </CardContent>
+                  )}
+                </NavLink>
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "0 8px",
+                  }}
+                >
+                  <Box 
+                   sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                  >
                     <Button
-                      variant="outlined"
+                      variant="small"
                       size="small"
-                      startIcon={<RemoveIcon />}
+                      startIcon={<EditIcon />}
                     >
-                      Remove
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      startIcon={<AddIcon />}
-                    >
-                      Add
+                      <Typography variant="caption">
+                      Edit
+                      </Typography>
                     </Button>
                   </Box>
-                </Grid>
-                <Grid item xs={2}>
                   <Form method="post" action="deleteItem">
                     <input type="hidden" name="itemId" value={item.id} />
                     <input type="hidden" name="pantryId" value={pantryId} />
                     <Button
                       type="submit"
-                      variant="outlined"
                       color="error"
                       size="small"
-                      startIcon={<DeleteIcon />}
                     >
-                      Delete
+                      <Typography variant="caption">
+                      Cancel
+                      </Typography>
                     </Button>
                   </Form>
-                </Grid>
-              </Grid>
+                </CardActions>
+              </Box>
             </Card>
           ))}
         </>

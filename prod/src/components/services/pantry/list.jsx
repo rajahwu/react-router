@@ -142,7 +142,7 @@ export default function Pantries() {
                   </Button>
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    color="error"
                     sx={{ minWidth: "40px", padding: "12px 16px" }}
                     onClick={handleCancelEdit}
                   >

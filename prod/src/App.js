@@ -1,4 +1,6 @@
 import { Box, Container } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./components/root/Header";
@@ -10,6 +12,7 @@ const theme = createTheme({});
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg" sx={{ paddingTop: 4 }}>
         <Header />
         <Box sx={{ marginTop: 10 }}>
@@ -18,6 +21,7 @@ const App = () => {
           </main>
         </Box>
       </Container>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };

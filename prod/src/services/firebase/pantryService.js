@@ -35,7 +35,7 @@ const pantryService = {
       const pantriesSnapshot = await getDocs(q);
 
       if (pantriesSnapshot.empty) {
-        console.log("No pantries found.");
+        console.error("No pantries found.");
         return [];
       }
 

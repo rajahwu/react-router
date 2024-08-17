@@ -24,7 +24,7 @@ export async function action({ request }) {
       expiryDate,
       pantryId,
     );
-    return redirect(`/${user.displayName}/pantries/${newItem.pantryId}`);
+    return redirect(`/${user.displayName}/pantries/${newItem.id}`);
   } catch (error) {
     console.error("Failed to add item:", error);
     return { error: "Failed to add item." };
