@@ -142,11 +142,12 @@ export default function PantryItems() {
               </Button>
               <Button
                 variant="outlined"
-                color="error"
+                color="secondary"
+                size="small"
                 sx={{ minWidth: "40px", padding: "4px 8px" }}
                 onClick={() => handleRemoveForm(form.id)}
               >
-                <DeleteIcon />
+                Cancel
               </Button>
             </Box>
           </Form>
@@ -159,7 +160,7 @@ export default function PantryItems() {
             <Card
               key={item.id}
               sx={{
-                border: 2,
+                border: 1,
                 borderColor: "divider",
                 borderRadius: 1,
                 display: "flex",
@@ -173,13 +174,11 @@ export default function PantryItems() {
                 title={item.imageAlt}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                <NavLink style={{ textDecoration: "none" }}>
-                  {({isActive}) => (
                 <CardContent
                   sx={{
-                    backgroundColor: isActive ? "cyan" : "primary.main",
+                    backgroundColor: "primary.main",
                     color: "white",
-                    border: isActive ? "2px solid cyan" : "1px solid #ccc",
+                    border: "1px solid #ccc",
                     padding: 2,
                     textDecoration: "none",
                   }}
@@ -192,8 +191,6 @@ export default function PantryItems() {
                     {new Date(item.expiryDate.seconds * 1000).toLocaleDateString()}
                   </Typography>
                 </CardContent>
-                  )}
-                </NavLink>
                 <CardActions
                   sx={{
                     display: "flex",
@@ -225,9 +222,10 @@ export default function PantryItems() {
                       type="submit"
                       color="error"
                       size="small"
+                      startIcon={<HighlightOffIcon />}
                     >
                       <Typography variant="caption">
-                      Cancel
+                      Delete
                       </Typography>
                     </Button>
                   </Form>
